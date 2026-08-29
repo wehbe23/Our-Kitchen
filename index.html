@@ -138,7 +138,7 @@
           هذا الموقع مخصص لتوثيق أكلاتنا العائلية المفضلة، بالأوزان والملاحظات الدقيقة اللي ناسبت ذوقنا، بدون تعقيد وبأسهل طريقة للطبخ والتنسيق.
         </p>
         <div class="pt-4 border-t border-warm-100 flex flex-col gap-1 items-center text-xs text-warm-800/50">
-          <span>الإصدار V1.0 • صُنع بكل حب للعائلة</span>
+          <span>الإصدار V1.1 • صُنع بكل حب للعائلة</span>
         </div>
       </div>
     </div>
@@ -157,224 +157,270 @@
   </nav>
 
   <script>
-    // --- RECIPE DATA STORE ---
+    // --- COMPLETE RECIPES DATA STORE (ALL 6 FAMILY RECIPES) ---
     const RECIPES = [
       {
         id: "chicken-biryani",
         category: "chicken",
+        tags: ["chicken", "favs"],
         isFavorite: true,
         name: { ar: "برياني دجاج العائلة", en: "Family Chicken Biryani" },
         desc: {
           ar: "برياني متوازن النكهات ومضبوط بكمية دجاج 750 جم مع جدول زمني لتزامن الرز والدجاج.",
           en: "Balanced aromatic chicken biryani with 750g chicken and synchronized cooking timeline."
         },
-        protein: { ar: "دجاج", en: "Chicken" },
+        protein: { ar: "دجاج (صدور وأفخاذ)", en: "Chicken (Breast & Thigh)" },
         prepTime: "25 min",
         cookTime: "40 min",
         totalTime: "65 min",
         difficulty: { ar: "متوسط", en: "Medium" },
         baseServings: 4,
         equipment: {
-          ar: ["قدر تيفال عميق/كبير", "خلاط طماطم", "مصفاة رز"],
+          ar: ["قدر تيفال عميق/كبير للبرياني", "خلاط لطحن الطماطم", "مصفاة رز"],
           en: ["Large deep pot", "Tomato blender", "Rice colander"]
         },
         ingredients: [
-          { name: { ar: "دجاج (صدور وأفخاذ بدون عظم)", en: "Boneless chicken (breast & thigh)" }, amount: 750, unit: "g" },
-          { name: { ar: "أرز بسمتي مغسول ومنقوع", en: "Basmati rice, soaked" }, amount: 2.5, unit: { ar: "كوب", en: "cups" } },
-          { name: { ar: "بصل كبير مفروم ناعم", en: "Large onion, finely chopped" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
-          { name: { ar: "طماطم معصورة بالخلاط", en: "Tomatoes, blended" }, amount: 3, unit: { ar: "حبة", en: "pcs" } },
-          { name: { ar: "لبن زبادي", en: "Plain yogurt" }, amount: 0.5, unit: { ar: "كوب", en: "cup" } },
-          { name: { ar: "ثوم وزنجبيل مهروس", en: "Garlic & ginger paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "بهارات برياني مشكلة وكركم", en: "Biryani spice mix & turmeric" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "زعفران منقوع بماء كادي أو ورد", en: "Saffron in rose/kewra water" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+          { name: { ar: "دجاج مسحب (خليط صدور وأفخاذ مكعبات)", en: "Boneless chicken (breast & thigh cubes)" }, amount: 750, unit: "g" },
+          { name: { ar: "أرز بسمتي حبة طويلة مغسول ومنقوع", en: "Basmati rice, soaked 20 mins" }, amount: 2.5, unit: { ar: "كوب", en: "cups" } },
+          { name: { ar: "بصل كبير مفروم ناعم", en: "Large onions, finely diced" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "طماطم طازجة معصورة بالخلاط", en: "Fresh tomatoes, blended smooth" }, amount: 3, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "لبن زبادي لتتبيل الدجاج", en: "Plain yogurt for marinade" }, amount: 0.5, unit: { ar: "كوب", en: "cup" } },
+          { name: { ar: "ثوم وزنجبيل مهروس طازج", en: "Garlic & ginger paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "بهارات برياني مشكلة وكركم وكزبرة", en: "Biryani spice blend, turmeric & coriander" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "زعفران منقوع بماء كادي أو ماء ورد", en: "Saffron infused in rose/kewra water" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "زيت نباتي أو سمن", en: "Oil or ghee" }, amount: 3, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
         ],
         prepSteps: {
-          ar: ["تقطيع الدجاج لمكعبات متوسطة وتتبيله بالزبادي ونصف البهارات.", "نقع الأرز البسمتي بماء دافئ 20 دقيقة.", "خلط الطماطم بالخلاط الكهربائي."],
-          en: ["Cut chicken into medium cubes; marinate with yogurt & half spices.", "Soak basmati rice in warm water for 20 mins.", "Blend the tomatoes smooth."]
+          ar: [
+            "تقطيع الـ 750 جم دجاج لمكعبات متساوية وتتبيلها بالزبادي وملعقة بهارات وثوم وزنجبيل.",
+            "نقع 2.5 كوب أرز بسمتي بماء فاتر لمدة 20 دقيقة.",
+            "خلط حبات الطماطم في الخلاط الكهربائي حتى تصبح ناعمة تماماً."
+          ],
+          en: [
+            "Cut 750g chicken into uniform cubes; marinate with yogurt, ginger-garlic paste, and 1 tbsp spices.",
+            "Soak 2.5 cups basmati rice in lukewarm water for 20 mins.",
+            "Blend the fresh tomatoes until smooth."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "تجهيز وتقطيع الدجاج وتتبيله بالزبادي", en: "Prep & marinate chicken with yogurt" } },
-          { time: "00:10", text: { ar: "قلي البصل وإضافة الثوم والزنجبيل وخليط الدجاج", en: "Sauté onions, ginger-garlic, & sear chicken" } },
-          { time: "00:20", text: { ar: "إضافة الطماطم والبهارات وترك الدجاج يتسبك على نار هادئة", en: "Add blended tomatoes & simmer gravy" } },
-          { time: "00:25", text: { ar: "غلي ماء الأرز مع البهارات الصحيحة وبدء السلق 70%", en: "Boil water for rice and parboil for 6-7 mins" } },
-          { time: "00:35", text: { ar: "تطبيق طبقات الأرز والدجاج وإضافة الزعفران", en: "Layer rice over chicken gravy and add saffron" } },
-          { time: "00:45", text: { ar: "تهدئة النار تماماً للتبخير (Dum) لمدة 15 دقيقة", en: "Dum cook on lowest heat for 15 mins" } },
-          { time: "01:00", text: { ar: "راحة 5 دقائق ثم التقديم", en: "Rest 5 mins and serve" } }
+          { time: "00:00", text: { ar: "تتبيل الدجاج ونقع الأرز البسمتي وخلط الطماطم", en: "Marinate chicken, soak rice, and blend tomatoes" } },
+          { time: "00:10", text: { ar: "حمس البصل حتى يصبح ذهبياً ثم إضافة خليط الدجاج وتشويحه", en: "Sauté onions till golden; add chicken and sear" } },
+          { time: "00:20", text: { ar: "إضافة الطماطم المعصورة والبهارات وتهدئة النار لتتسبك المرقة", en: "Add blended tomatoes and spices; simmer gravy" } },
+          { time: "00:25", text: { ar: "غلي ماء الأرز مع البهارات الصحيحة وبدء السلق حتى ينضج 70%", en: "Boil salted water and parboil rice for 6-7 mins (70% done)" } },
+          { time: "00:35", text: { ar: "تصفية الأرز وتطبيقه طبقات فوق الدجاج وسكب منقوع الزعفران", en: "Drain rice, layer over chicken sauce, drizzle saffron" } },
+          { time: "00:45", text: { ar: "إحكام إغلاق القدر على نار هادئة جداً (الدم - Dum) لمدة 15 دقيقة", en: "Seal lid tightly and steam on lowest heat (Dum) for 15 mins" } },
+          { time: "01:00", text: { ar: "إطفاء النار وراحة القدر 5 دقائق ثم السكب والتقديم", en: "Rest 5 mins off heat, then gently fluff and serve" } }
         ],
         instructions: {
           ar: [
-            "في قدر كبير، احمس البصل حتى يصبح ذهبياً غامقاً، ثم أضف الثوم والزنجبيل والدجاج المتبل وشوحه جيداً.",
-            "أضف الطماطم المخلوطة والبهارات واترك الدجاج ينضج على نار هادئة حتى تثقل المرقة.",
-            "في قدر منفصل، اسلق الأرز في ماء مملح حتى ينضج 70% وصفّه.",
-            "ضع طبقة من الرز فوق مرقة الدجاج، ووزع الزعفران على الوجه.",
-            "غطّ القدر بإحكام على نار هادئة جداً لمدة 15 دقيقة حتى يكتمل النضج."
+            "في قدر واسع، احمس البصل في الزيت أو السمن حتى يتحمر ويكتسب لوناً ذهبياً عميقاً.",
+            "أضف الدجاج المتبل مع معجون الثوم والزنجبيل وشوحه على نار عالية لمدة 5 دقائق حتى يتغير لونه.",
+            "اسكب الطماطم المعصورة بالخلاط والبهارات والملح، وخفف النار واترك الدجاج ينضج ويتسبك في الصلصة.",
+            "في قدر منفصل، اسلق الأرز في ماء مغلي مملح مع حبات الهيل والقرنفل لمدة 6-7 دقائق (استواء 70%) ثم صفّه بالمصفاة.",
+            "ضع الأرز المصفى فوق صوص الدجاج، ووزع منقوع الزعفران على الوجه.",
+            "غطّ القدر بإحكام على أصغر عين غاز بأهدأ حرارة لمدة 15 دقيقة حتى يكتمل النضج وتتشرب النكهات."
           ],
           en: [
-            "Sauté onions until deep golden, then add ginger-garlic paste and chicken; sear well.",
-            "Add blended tomatoes and spices. Simmer until chicken is cooked and gravy is rich.",
-            "In another pot, boil basmati rice until 70% done, then drain.",
-            "Layer the rice over the chicken sauce and drizzle saffron on top.",
-            "Cover tightly on very low heat (Dum) for 15 mins to steam."
+            "In a large deep pot, sauté sliced onions in oil/ghee until deep golden.",
+            "Add marinated chicken and ginger-garlic paste; sear over high heat for 5 minutes.",
+            "Pour in blended tomatoes, spices, and salt. Reduce heat and simmer until chicken is cooked through and gravy thickens.",
+            "In a separate pot, boil basmati rice in salted water with whole spices for 6-7 minutes (70% cooked), then drain.",
+            "Layer parboiled rice directly over the chicken gravy; drizzle saffron water across the top.",
+            "Cover pot tightly on low heat (Dum) for 15 minutes to finish steaming."
           ]
         },
         substitutions: {
           ar: [
-            "في حال عدم توفر طماطم طازجة، استبدلها بـ 2 ملعقة كبيرة معجون طماطم مذابة بنصف كوب ماء.",
-            "يمكن استخدام صدور دجاج كاملة أو خليط مع الأفخاذ."
+            "في حال عدم توفر طماطم طازجة، استخدم ملعقتين كبيرتين معجون طماطم مذابة في نصف كوب ماء دافئ.",
+            "يمكن استخدام صدور دجاج كاملة أو أفخاذ حصراً حسب المتوفر.",
+            "يمكن استبدال ماء الورد بالزعفران مع ملعقة حليب دافئ."
           ],
           en: [
-            "No fresh tomato: substitute with 2 tbsp tomato paste diluted in 1/2 cup warm water.",
-            "Can use exclusively chicken breast or thighs based on preference."
+            "No fresh tomato: substitute with 2 tbsp tomato paste dissolved in 1/2 cup warm water.",
+            "Can use exclusively chicken breast or thighs based on what is in the fridge.",
+            "Can dissolve saffron in 2 tbsp warm milk instead of rose water."
           ]
         },
         familyNotes: {
-          ar: "الـ 750 جم دجاج أعطت توازناً ممتازاً مع كوبين ونصف رز بدون أن يطغى اللحم على الأرز. خلط الطماطم بالخلاط أعطى قوام مرقة أنعم وألذ بكثير من التقطيع العادي.",
-          en: "750g of chicken is the sweet spot for 2.5 cups of rice. Blending the fresh tomatoes made the gravy significantly smoother and richer than chopped tomatoes."
+          ar: "الـ 750 جم دجاج مع 2.5 كوب رز هي النسبة المثالية اللي ضبطت معنا بعد تجارب سابقة كان فيها الدجاج يطغى على كمية الأرز. خلط الطماطم بالخلاط الكهربائي يعطي صوص ناعم جداً ومتجانس مع طبقات الرز.",
+          en: "750g of chicken for 2.5 cups of rice is our golden ratio — previously, too much chicken overwhelmed the rice. Blending the tomatoes smooth makes the gravy significantly better than chopping them."
         }
       },
       {
         id: "mansaf",
         category: "lamb",
+        tags: ["lamb", "favs"],
         isFavorite: true,
-        name: { ar: "منسف أردني بالجميد السائل", en: "Jordanian Mansaf (Liquid Jameed)" },
+        name: { ar: "المنسف الأردني بالجميد السائل", en: "Jordanian Mansaf (Liquid Jameed)" },
         desc: {
-          ar: "منسف بلحم كتف الخروف والجميد السائل المخفف باللبن مع الرز المصري الأصفر.",
-          en: "Authentic Mansaf with lamb shoulder, liquid jameed, and yellow Egyptian rice."
+          ar: "منسف بلحم كتف الخروف (1.6 كغ) والجميد السائل المخفف بالزبادي مع الأرز المصري الأصفر وطريقة طباخة الرز.",
+          en: "Authentic Mansaf with 1.6kg lamb shoulder, liquid jameed & yogurt sauce, and vibrant yellow Egyptian rice."
         },
-        protein: { ar: "لحم خروف", en: "Lamb" },
+        protein: { ar: "لحم كتف خروف", en: "Lamb Shoulder" },
         prepTime: "20 min",
         cookTime: "90 min",
         totalTime: "110 min",
         difficulty: { ar: "متوسط", en: "Medium" },
         baseServings: 6,
         equipment: {
-          ar: ["قدر ضغط أو قدر كبير للحم", "قدر رز كهربائي (Rice Cooker) أو قدر عادي", "سدر للتقديم"],
-          en: ["Pressure pot or large soup pot", "Rice cooker or standard pot", "Large serving platter"]
+          ar: ["قدر ضغط أو قدر سلق لحم عميق", "طباخة أرز كهربائية (Rice Cooker) أو قدر عادي", "سدر للتقديم ومصفاة"],
+          en: ["Pressure pot or deep soup pot", "Standard Cook/Warm Rice Cooker", "Large serving tray (Seder)"]
         },
         ingredients: [
-          { name: { ar: "كتف خروف مقطع قطع كبيرة", en: "Lamb shoulder, large chunks" }, amount: 1600, unit: "g" },
+          { name: { ar: "كتف خروف مقطع قطع كبيرة للمنسف", en: "Lamb shoulder, large bone-in chunks" }, amount: 1600, unit: "g" },
           { name: { ar: "جميد سائل جاهز", en: "Liquid Jameed" }, amount: 1000, unit: "ml" },
-          { name: { ar: "لبن زبادي رائب (لتخفيف الملوحة)", en: "Plain yogurt" }, amount: 250, unit: "g" },
-          { name: { ar: "أرز مصري (حبة متوسطة)", en: "Egyptian/medium grain rice" }, amount: 3, unit: { ar: "أكواب", en: "cups" } },
-          { name: { ar: "سمن بلدي", en: "Ghee" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "كركم / بهار منسف أصفر", en: "Turmeric / Mansaf spice" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
-          { name: { ar: "خبز شراك / صاج ومكسرات مقلية", en: "Shrak bread & toasted almonds" }, amount: 2, unit: { ar: "رغيف", en: "breads" } }
+          { name: { ar: "لبن زبادي رائب (لتخفيف الملوحة والحدّة)", en: "Plain yogurt (to balance salinity)" }, amount: 250, unit: "g" },
+          { name: { ar: "أرز مصري حبة متوسطة مغسول ومصفى", en: "Egyptian/medium grain rice, rinsed" }, amount: 3, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "سمن بلدي طيب الرائحة", en: "Clarified butter (ghee)" }, amount: 2.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "كركم أصفر وبهار منسف", en: "Turmeric & Mansaf spice" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "بصلة ومطحون بهارات سلق (هيل، غار، قرفة)", en: "Whole onion & broth aromatics" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "خبز شراك (صاج) ولوز وصنوبر مقلي", en: "Shrak bread & toasted almonds" }, amount: 2, unit: { ar: "رغيف", en: "breads" } }
         ],
         prepSteps: {
-          ar: ["غسل اللحم وسلقه مع البهارات الصحيحة لإزالة الزفرة.", "غسل ونقع الأرز المصري 15 دقيقة.", "خلط الجميد السائل مع الزبادي في قدر جانبي."],
-          en: ["Wash lamb and boil with aromatics to skim broth.", "Rinse and soak Egyptian rice for 15 mins.", "Whisk liquid jameed with yogurt."]
+          ar: [
+            "غسل قطع اللحم وتجهيز قدر السلق مع البهارات الصحيحة وبصلة.",
+            "خفق الجميد السائل مع كوب اللبن الزبادي والكركم في قدر جانبي حتى يمتزج تماماً.",
+            "غسل الـ 3 أكواب أرز مصري وتصفيتها من الماء."
+          ],
+          en: [
+            "Wash lamb chunks and prepare broth pot with aromatics and onion.",
+            "Whisk liquid jameed with yogurt and turmeric in a saucepan until smooth.",
+            "Rinse 3 cups of Egyptian rice and drain well."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "بدء سلق اللحم مع بصلة وبهارات صحيحة", en: "Start boiling lamb with aromatics" } },
-          { time: "00:30", text: { ar: "خلط الجميد واللبن وغليانه مع التحريك المستمر", en: "Whisk and boil Jameed-yogurt sauce" } },
-          { time: "00:45", text: { ar: "نقل اللحم ومرقته المصفاة إلى قدر الجميد ليكمل نضجه", en: "Transfer lamb and strained broth into jameed" } },
-          { time: "00:55", text: { ar: "تشغيل قدر الرز الكهربائي (Cook) مع السمن والكركم", en: "Start Rice Cooker with ghee and turmeric" } },
-          { time: "01:25", text: { ar: "الرز واللحم جاهزان بالتزامن - سكب الجميد والتقديم", en: "Rice & lamb ready together; assemble on Shrak" } }
+          { time: "00:00", text: { ar: "بدء سلق اللحم وإزالة الزفرة والرغوة بدقة", en: "Start boiling lamb; diligently skim all broth foam" } },
+          { time: "00:35", text: { ar: "خفق الجميد والزبادي ووضعه على النار مع التحريك المستمر باتجاه واحد", en: "Whisk jameed & yogurt; stir constantly in one direction over medium heat" } },
+          { time: "00:50", text: { ar: "تصفية مرق اللحم وإضافته مع قطع اللحم لقدر الجميد المغلي", en: "Strain lamb broth; add broth and lamb chunks to boiling jameed" } },
+          { time: "01:00", text: { ar: "وضع الأرز والسمن والكركم والماء في طباخة الرز وضغط زر (Cook)", en: "Add rice, ghee, turmeric & water into Rice Cooker and push 'Cook'" } },
+          { time: "01:25", text: { ar: "تحول طباخة الرز إلى (Warm) واستواء اللحم بالجميد بالتزامن", en: "Rice cooker switches to 'Warm'; lamb in jameed is perfectly tender" } },
+          { time: "01:30", text: { ar: "فرد خبز الشراك وسكب الرز وترتيب اللحم والتزيين باللوز", en: "Assemble Shrak bread, soak with jameed, top with yellow rice & meat" } }
         ],
         instructions: {
           ar: [
-            "اسلق اللحم حتى يوشك على النضج مع إزالة الرغوة والزفرة باستمرار.",
-            "في قدر آخر، اخلط الجميد السائل والزبادي والكركم وضعه على النار مع التحريك المستمر باتجاه واحد حتى يغلي.",
-            "أضف مرق اللحم المصفى وقطع اللحم إلى الجميد واتركه يتسبك 25 دقيقة.",
-            "في قدر الرز (أو طباخة الأرز): ضع الأرز مع السمن والكركم والماء والملح واضغط زر Cook.",
-            "في سدر التقديم: افرد خبز الشراك وشربه بالجميد، ثم اسكب الرز الأصفر ورتب اللحم وزينه باللوز المقلي."
+            "اسلق لحم الخروف مع المطيبات (بصل، هيل، ورق غار) حتى ينضج بنسبة 85% مع الحرص على قشط الرغوة.",
+            "في قدر آخر، اخلط الجميد السائل مع الزبادي والكركم وضعه على النار وحرّك باستمرار باتجاه واحد بدون توقف حتى يبدأ بالغليان لمنع انفصاله.",
+            "صفّ كوبين إلى ثلاثة من مرق اللحم الساخن وأضفها فوق الجميد المغلي، ثم انقل قطع اللحم إليه واتركه يغلي ويتسبك على نار هادئة 25 دقيقة حتى يذوب اللحم ويكتسب اللون الأصفر الجميل.",
+            "لطبخ الرز في طباخة الرز (Rice Cooker): ضع الـ 3 أكواب رز مصري مع 3.75 كوب ماء ساخن، 2 ملعقة سمنة، ملعقة صغيرة كركم، وملح. اخلطهم جيداً واضغط زر (Cook). عندما تفصل الطباخة وتتحول إلى (Warm)، اتركها مغلقة 10 دقائق.",
+            "للتقديم: افرد خبز الشراك في السدر، شرّبه بالجميد الساخن، ثم اسكب الأرز الأصفر فوقه، ورتب قطع اللحم على الوجه وزينه باللوز المقلي والبقدونس."
           ],
           en: [
-            "Boil the lamb chunks with aromatics until tender, skimming any foam.",
-            "In another pot, whisk liquid jameed, yogurt, and turmeric. Bring to a boil stirring constantly in one direction.",
-            "Add strained lamb broth and lamb chunks to the boiling jameed; simmer for 25 mins.",
-            "In the Rice Cooker: add Egyptian rice, water, ghee, turmeric, salt, and hit 'Cook'.",
-            "To serve: layer Shrak bread soaked with jameed sauce, spread yellow rice, top with lamb and toasted nuts."
+            "Boil lamb shoulder chunks with whole spices until nearly tender (approx. 45-50 mins), skimming surface foam.",
+            "In a separate pot, whisk liquid jameed, yogurt, and turmeric. Place on medium heat and stir constantly in one direction until it begins boiling.",
+            "Strain 2-3 cups hot lamb broth into the boiling jameed, transfer the lamb pieces in, and let simmer gently for 25 mins.",
+            "In your Cook/Warm Rice Cooker: Add 3 cups Egyptian rice, 3.75 cups hot water, 2 tbsp ghee, 1 tsp turmeric, and salt. Stir, close lid, and press 'Cook'. When it switches to 'Warm', allow it to rest undisturbed for 10 mins.",
+            "Assembly: Layer Shrak bread on a large platter, ladle hot jameed sauce, pile the yellow rice over the bread, top with tender lamb, and garnish with toasted almonds."
           ]
         },
         substitutions: {
           ar: [
-            "يمكن استبدال الرز المصري برز بسمتي أو خليط 50/50.",
-            "إذا كان الجميد ثقيلاً أو مالحاً جداً، زد كمية الزبادي أو مرق اللحم غير المملح."
+            "يمكن خلط الرز المصري مع الرز البسمتي بنسبة 50/50.",
+            "إذا كان الجميد السائل مالحاً أو ثقيلاً، زد نصف كوب زبادي إضافي مع مرقة اللحم غير المملحة."
           ],
           en: [
-            "Egyptian rice can be swapped with Basmati or a 50/50 mix.",
-            "If jameed is too salty/pungent, add more yogurt or unsalted meat broth to mellow it."
+            "Can blend Egyptian rice with Basmati (50/50 ratio) if preferred.",
+            "If liquid jameed is overly salty, add more yogurt or unsalted meat broth to temper it."
           ]
         },
         familyNotes: {
-          ar: "الجميد السائل مع الزبادي يعطي قواماً ناعماً وخفيفاً على المعدة. الرز المصري في طباخة الرز البسيطة (Cook/Warm) ضبط بنسبة 1 كوب رز إلى 1.25 كوب ماء مع ملعقة سمنة ورشة كركم للون الأصفر الملكي.",
-          en: "Liquid jameed lightened with yogurt creates the perfect consistency without harsh saltiness. 3 cups Egyptian rice in the basic rice cooker needed 3.75 cups water and turmeric for that vibrant yellow color."
+          ar: "الـ 1.6 كغ كتف خروف كمية كريمة ومناسبة جداً مع 3 أكواب رز مصري. تخفيف الجميد السائل بالزبادي وإضافة رشة كركم يعطي توازناً في النكهة ولوناً أصفر شهياً لكل من الرز والجميد.",
+          en: "1.6 kg lamb shoulder is generous and pairs well with 3 cups Egyptian rice. Lightening the liquid jameed with yogurt plus turmeric gives the ideal color and smooth texture without overpowering pungency."
         }
       },
       {
         id: "dawood-basha",
         category: "beef",
+        tags: ["beef", "quick"],
         isFavorite: false,
-        name: { ar: "داوود باشا مع الأرز", en: "Dawood Basha (Meatballs in Tomato Sauce)" },
+        name: { ar: "داوود باشا مع الأرز بالشعيرية", en: "Dawood Basha (Meatballs in Rich Tomato Sauce)" },
         desc: {
-          ar: "كرات لحم مفروم 500 جم متبلة في صلصة طماطم مسبكة، تقدم مع الرز بالشعيرية.",
-          en: "500g minced beef meatballs in rich tomato sauce, served with vermicelli rice."
+          ar: "كرات لحم بقري مفروم (500 جم) متبلة ومحمرة في صلصة طماطم وبصل مسبكة، تقدم مع الرز بالشعيرية من طباخة الرز.",
+          en: "500g minced beef meatballs browned and simmered in a spiced tomato-onion sauce, served with rice cooker vermicelli rice."
         },
-        protein: { ar: "لحم مفروم", en: "Minced Beef" },
+        protein: { ar: "لحم بقري مفروم", en: "Minced Beef" },
         prepTime: "15 min",
         cookTime: "30 min",
         totalTime: "45 min",
         difficulty: { ar: "سهل", en: "Easy" },
         baseServings: 4,
         equipment: {
-          ar: ["مقلاة عميقة", "قدر للرز بالشعيرية"],
-          en: ["Deep frying pan/skillet", "Pot or Rice Cooker"]
+          ar: ["مقلاة عميقة واسعة للصلصة والكرات", "طباخة أرز كهربائية (Rice Cooker) أو قدر للرز"],
+          en: ["Deep skillet / pan", "Rice cooker or standard pot"]
         },
         ingredients: [
-          { name: { ar: "لحم بقري مفروم ناعم", en: "Minced beef" }, amount: 500, unit: "g" },
-          { name: { ar: "بصلة صغيرة مفرومة ناعم للحم", en: "Small onion, grated for meat" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
-          { name: { ar: "بصل مقطع شرائح للصلصة", en: "Onion, sliced for sauce" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
-          { name: { ar: "عصير طماطم أو طماطم معصورة", en: "Blended tomatoes" }, amount: 2, unit: { ar: "كوب", en: "cups" } },
-          { name: { ar: "معجون طماطم", en: "Tomato paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "بهار مشكل وقرفة وملح وفلفل", en: "Seven spices, cinnamon, salt & pepper" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "دبس رمان (اختياري)", en: "Pomegranate molasses (optional)" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+          { name: { ar: "لحم بقري مفروم طازج", en: "Minced beef" }, amount: 500, unit: "g" },
+          { name: { ar: "بصلة صغيرة مبشورة ناعم (لتتبيل اللحم)", en: "Small onion, grated (for meatballs)" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "بصلة متوسطة مقطعة شرائح طولية (للصلصة)", en: "Medium onion, sliced (for sauce)" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "طماطم معصورة بالخلاط أو عصير طماطم", en: "Blended fresh tomatoes" }, amount: 2, unit: { ar: "كوب", en: "cups" } },
+          { name: { ar: "معجون طماطم مركز", en: "Tomato paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "بهار مشكل (سبع بهارات) وقرفة مطحونة", en: "Seven spices & ground cinnamon" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "دبس رمان (لمسة حموضة خفيفة)", en: "Pomegranate molasses" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "زيت زيتون أو زيت نباتي للقلي", en: "Olive oil / cooking oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "ملح وفلفل أسود مطحون", en: "Salt & black pepper" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } }
         ],
         prepSteps: {
-          ar: ["تتبيل اللحم بالبصل المبشور والبهارات وتكويره كرات صغيرة متساوية.", "تقطيع بصل الصلصة شرائح رقيقة."],
-          en: ["Season beef with grated onion and spices, roll into uniform small meatballs.", "Slice onions for sauce."]
+          ar: [
+            "خلط الـ 500 جم لحم مفروم مع البصل المبشور، نصف ملعقة بهارات، ملح، وفلفل وتكويره كرات صغيرة متساوية الحجم.",
+            "تقطيع بصلة الصلصة إلى جوانح رقيقة وتجهيز عصير الطماطم.",
+            "تجهيز مكونات الرز بالشعيرية لطباخة الرز."
+          ],
+          en: [
+            "Mix 500g minced beef with grated onion, 1/2 tsp spices, salt and pepper. Shape into small uniform balls.",
+            "Slice onion into wedges and blend fresh tomatoes.",
+            "Measure rice and vermicelli for the rice cooker."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "تكوير اللحم المفروم وتشويحه في المقلاة", en: "Shape and brown meatballs in skillet" } },
-          { time: "00:10", text: { ar: "بدء تحمير شعيرية الرز وتشغيل الرز", en: "Start vermicelli rice in pot or cooker" } },
-          { time: "00:15", text: { ar: "حمس شرائح البصل وإضافة صلصة الطماطم", en: "Sauté sliced onions, add tomato sauce & paste" } },
-          { time: "00:25", text: { ar: "إرجاع الكرات للصلصة لتتسبك مع دبس الرمان", en: "Simmer meatballs in tomato sauce with pomegranate molasses" } },
-          { time: "00:35", text: { ar: "التقديم المباشر مع الرز الساخن", en: "Serve immediately with hot vermicelli rice" } }
+          { time: "00:00", text: { ar: "تكوير اللحم المفروم وتشويحه في المقلاة بالزيت حتى يتحمر", en: "Roll meatballs & sear in skillet with oil until browned" } },
+          { time: "00:10", text: { ar: "رفع الكرات جانباً، وتشغيل طباخة الرز بالشعيرية بزر (Cook)", en: "Set meatballs aside; start vermicelli rice in Rice Cooker (Cook)" } },
+          { time: "00:15", text: { ar: "حمس شرائح البصل في نفس المقلاة ثم إضافة معجون الطماطم والطماطم المعصورة", en: "Sauté sliced onions in same pan; stir in tomato paste & blended tomatoes" } },
+          { time: "00:25", text: { ar: "إرجاع كرات اللحم للصلصة وتركها تتسبك 12 دقيقة مع دبس الرمان", en: "Return meatballs into sauce; simmer with pomegranate molasses" } },
+          { time: "00:35", text: { ar: "تحول طباخة الرز لـ Warm واستواء كرات اللحم بالتزامن - جاهز للتقديم", en: "Rice switches to Warm & sauce is rich and thick; ready together" } }
         ],
         instructions: {
           ar: [
-            "تبل اللحم المفروم بالملح والفلفل والقرفة وشكل كرات صغيرة.",
-            "شوّح كرات اللحم في ملعقة زيت حتى تتحمر من الخارج، ثم ارفعها جانباً.",
-            "في نفس المقلاة، شوّح شرائح البصل حتى تذبل، ثم أضف معجون الطماطم والطماطم المعصورة والبهارات.",
-            "أرجع كرات اللحم للصلصة واتركها تغلي على نار هادئة 15 دقيقة حتى تتسبك.",
-            "أضف ملعقة دبس الرمان في آخر دقيقتين وقدمها مع الرز بالشعيرية."
+            "تبل اللحم المفروم بالبصل المبشور ورشة قرفة وبهارات وملح وفلفل، وافركه بلطف ثم كوّره إلى كرات صغيرة بحجم حبة الجوز.",
+            "في مقلاة عميقة وواسعة، سخن الزيت وحمر كرات اللحم على نار متوسطة حتى تكتسب لوناً بنياً جميلاً من جميع الجهات، ثم ارفعها في طبق جانبي.",
+            "في نفس المقلاة وبنفس الزيت المشبع بنكهة اللحم، أضف شرائح البصل وقلبها حتى تذبل وتصبح شفافة.",
+            "أضف معجون الطماطم والطماطم المعصورة والبهارات وكوب ماء دافئ، واترك الصلصة تبدأ بالغليان.",
+            "أعد كرات اللحم المحمرة إلى المقلاة، وخفف النار واتركها تتسبك لمدة 15 دقيقة حتى تصبح الصلصة غنية وكثيفة. أضف ملعقة دبس الرمان في آخر دقيقتين.",
+            "اسكب داوود باشا في طبق التقديم وقدمه بجانب الرز بالشعيرية الساخن."
           ],
           en: [
-            "Season minced beef, form into balls, and brown in skillet with olive oil. Set aside.",
-            "In same pan, sauté sliced onions until translucent. Stir in tomato paste, blended tomatoes, and spices.",
-            "Return meatballs into sauce and simmer gently for 15 minutes.",
-            "Finish with a spoon of pomegranate molasses and serve over vermicelli rice."
+            "Season minced beef with grated onion, cinnamon, seven spices, salt, and pepper. Shape into walnut-sized meatballs.",
+            "Heat oil in a deep skillet over medium-high. Sear meatballs on all sides until nicely browned, then remove to a plate.",
+            "In the same skillet, add sliced onions and sauté until soft and lightly golden.",
+            "Stir in tomato paste, blended tomatoes, remaining spices, and 1 cup of warm water. Bring to a simmer.",
+            "Return meatballs to the sauce. Lower heat and simmer for 15 minutes until sauce thickens. Stir in pomegranate molasses during the last 2 minutes.",
+            "Serve hot directly over freshly cooked vermicelli rice."
           ]
         },
         substitutions: {
-          ar: ["يمكن استبدال عصير الطماطم بملعقتي معجون طماطم مذابة بكوبين ماء دافئ."],
-          en: ["Can substitute blended fresh tomato with 2 tbsp paste in 2 cups warm broth/water."]
+          ar: [
+            "يمكن استبدال الطماطم المعصورة بـ 2.5 ملعقة كبيرة معجون طماطم محلولة بكوبين ماء أو مرق دجاج.",
+            "يمكن استبدال لحم البقر بلحم خروف مفروم أو خليط 50/50 بينهما."
+          ],
+          en: [
+            "Blended fresh tomatoes can be replaced with 2.5 tbsp tomato paste dissolved in 2 cups warm water/broth.",
+            "Can substitute beef with minced lamb or a 50/50 beef/lamb mix."
+          ]
         },
         familyNotes: {
-          ar: "الـ 500 جم مفروم تكفي 4 أشخاص ممتازاً مع الرز. تشغيل الرز بالشعيرية في طباخة الرز يوفر وقتاً ويجعل الطبخة تنتهي في نصف ساعة فقط.",
-          en: "500g beef is ideal for 4 people. Making the vermicelli rice in the rice cooker keeps the whole dinner under 35 minutes."
+          ar: "الـ 500 جم لحم مفروم كمية ممتازة تكفي 4 أشخاص تماماً مع الرز. طبخ الرز بالشعيرية في طباخة الرز الكهربائية أثناء تجهيز داوود باشا على الغاز جعل الطبخة كلها تنتهي بدون أي توتر وبنصف ساعة فقط.",
+          en: "500g minced beef is the exact sweet spot for 4 servings. Running the vermicelli rice in the rice cooker while simmering the meatballs on the stove streamlined our entire dinner prep into 35 minutes."
         }
       },
       {
         id: "beef-stroganoff",
         category: "beef",
+        tags: ["beef", "quick"],
         isFavorite: false,
-        name: { ar: "بيف ستروجانوف سريع", en: "Quick Beef Stroganoff" },
+        name: { ar: "بيف ستروجانوف سريع", en: "Practical Family Beef Stroganoff" },
         desc: {
-          ar: "شرائح لحم بقري 500 جم مع الفطر وصلصة الكريمة الغنية والماسترد.",
-          en: "500g beef strips with mushrooms and rich sour/cooking cream Dijon sauce."
+          ar: "شرائح لحم بقري ستيك (500 جم) سريعة التحضير مع الفطر الطازج وصوص الكريمة والخردل الغني لأيام الأسبوع.",
+          en: "500g tender beef strips quickly seared with fresh mushrooms, garlic, and a silky sour/cooking cream Dijon sauce."
         },
-        protein: { ar: "شرائح لحم", en: "Beef Strips" },
+        protein: { ar: "شرائح لحم بقري", en: "Beef Strips" },
         prepTime: "15 min",
         cookTime: "20 min",
         totalTime: "35 min",
@@ -382,168 +428,214 @@
         baseServings: 3,
         equipment: {
           ar: ["مقلاة ستيل أو تيفال واسعة جداً للتشويح العالي"],
-          en: ["Wide skillet for high-heat searing"]
+          en: ["Wide heavy skillet / frying pan"]
         },
         ingredients: [
-          { name: { ar: "شرائح لحم بقري ستيك رفيعة", en: "Beef stroganoff strips" }, amount: 500, unit: "g" },
+          { name: { ar: "شرائح لحم بقري رفيعة (ستروجانوف ستيك)", en: "Beef strips (tender steak cut)" }, amount: 500, unit: "g" },
           { name: { ar: "فطر طازج مقطع شرائح", en: "Fresh mushrooms, sliced" }, amount: 200, unit: "g" },
-          { name: { ar: "بصلة متوسطة مقطعة ناعم", en: "Medium onion, finely diced" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
-          { name: { ar: "ثوم مهروس", en: "Garlic, minced" }, amount: 2, unit: { ar: "فص", en: "cloves" } },
+          { name: { ar: "بصلة متوسطة مفرومة ناعم", en: "Medium onion, finely diced" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "ثوم مهروس طازج", en: "Garlic cloves, minced" }, amount: 2, unit: { ar: "فص", en: "cloves" } },
           { name: { ar: "كريمة طبخ أو ساور كريم", en: "Cooking cream or sour cream" }, amount: 1, unit: { ar: "كوب", en: "cup" } },
-          { name: { ar: "خردل ديجون / ماسترد", en: "Dijon mustard" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
-          { name: { ar: "زبدة وزيت زيتون", en: "Butter & olive oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+          { name: { ar: "خردل ديجون / ماسترد ناعم", en: "Dijon mustard" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "زبدة وزيت زيتون", en: "Butter & olive oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "ملح وفلفل أسود مطحون طازج", en: "Salt & freshly cracked black pepper" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } }
         ],
         prepSteps: {
-          ar: ["تجفيف شرائح اللحم بمناديل المطبخ وتتبيلها بملح وفلفل أسود.", "تقطيع الفطر والبصل."],
-          en: ["Pat beef dry with paper towels; season with salt and pepper.", "Slice mushrooms and onions."]
+          ar: [
+            "تجفيف الـ 500 جم شرائح لحم جيداً بمناديل المطبخ ورشها بملح وفلفل أسود.",
+            "تقطيع الفطر إلى شرائح والبصلة إلى مكعبات صغيرة ناعمة.",
+            "تجهيز الكريمة والماسترد بجانب المقلاة."
+          ],
+          en: [
+            "Pat 500g beef strips thoroughly dry with paper towels; season with salt and black pepper.",
+            "Slice mushrooms and finely dice onion.",
+            "Keep cream and Dijon mustard within reach beside stove."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "تسخين المقلاة لأعلى حرارة وتشويح اللحم سريعاً", en: "High-heat sear beef strips in batches (2-3 mins)" } },
-          { time: "00:08", text: { ar: "حمس البصل والفطر في نفس المقلاة مع الزبدة", en: "Sauté onions & mushrooms in leftover browned pan" } },
-          { time: "00:15", text: { ar: "إضافة الثوم ثم الكريمة والماسترد وتخفيف النار", en: "Add garlic, cream & Dijon; simmer to thicken" } },
-          { time: "00:20", text: { ar: "إرجاع اللحم وعصارته لدقيقة واحدة والتقديم فوراً", en: "Return beef & resting juices for 1 min; serve" } }
+          { time: "00:00", text: { ar: "تسخين المقلاة على نار عالية جداً وتشويح اللحم على دفعتين لدقيقتين فقط", en: "Heat pan very hot; sear beef strips in 2 quick batches (2 mins max)" } },
+          { time: "00:08", text: { ar: "رفع اللحم وتذويب الزبدة في نفس المقلاة وحمس البصل والفطر", en: "Set beef aside; melt butter in same pan & sauté onions and mushrooms" } },
+          { time: "00:15", text: { ar: "إضافة الثوم المهروس ثم سكب الكريمة والماسترد وتخفيف النار لتثقل الصلصة", en: "Add minced garlic, pour cream and Dijon; simmer 2 mins to thicken" } },
+          { time: "00:20", text: { ar: "إرجاع اللحم وعصارته للمقلاة لدقيقة واحدة فقط وتقديمه ساخناً", en: "Return beef & pan juices for 1 minute; serve immediately" } }
         ],
         instructions: {
           ar: [
-            "سخّن المقلاة جيداً مع زيت، وشوّح شرائح اللحم على دفعات على نار عالية لمدة دقيقتين حتى تتحمر فقط دون أن تفقد طراوتها، ثم ارفعها جانباً.",
-            "في نفس المقلاة، أضف الزبدة وحمر البصل والفطر حتى يذبل ويكتسب لوناً شهياً.",
-            "أضف الثوم، ثم اسكب كريمة الطبخ والماسترد ورشة فلفل أسود واتركها تغلي دقيقتين.",
-            "أعد شرائح اللحم وعصارتها إلى المقلاة لمدة دقيقة واحدة لتتجانس النكهات وقدمها مع بطاطا مهروسة أو أرز أو باستا."
+            "سخّن ملعقة زيت في مقلاة واسعة على أعلى درجة حرارة. ضع نصف كمية شرائح اللحم وشوّحها سريعاً لمدة دقيقة ونصف حتى يتغير لونها دون أن تفرز ماءها، ثم ارفعها وكرر مع النصف الآخر.",
+            "في نفس المقلاة الساخنة، ذوّب ملعقتي الزبدة وأضف البصل المفروم والفطر، وقلّب على نار متوسطة حتى يتحمر الفطر ويذبل البصل.",
+            "أضف الثوم المهروس وقلبه لمدة 30 ثانية حتى تفوح رائحته، ثم اسكب كوب الكريمة وملعقة الخردل ورشة ملح وفلفل أسود.",
+            "اترك الصلصة تغلي برفق لمدة دقيقتين حتى تبدأ بالتماسك وتثقل قليلاً.",
+            "أعد شرائح اللحم مع عصارتها المتجمعة في الطبق إلى المقلاة، وحركها مع الصلصة لمدة دقيقة واحدة فقط حتى تسخن، ثم ارفعها عن النار فوراً وقدمها مع أرز أو باستا أو بطاطا بيوريه."
           ],
           en: [
-            "Sear beef in a smoking hot pan with oil in batches (2 mins max) so it stays tender. Set aside.",
-            "In same pan, melt butter and sauté sliced onions and mushrooms until golden.",
-            "Add garlic, then pour in cream, Dijon mustard, and a pinch of salt/pepper. Simmer 2 mins.",
-            "Return beef and pan juices for 60 seconds. Serve immediately over rice, pasta, or mashed potatoes."
+            "Heat 1 tbsp oil in a wide skillet over high heat. Sear half the beef strips for 90 seconds without overcrowding so they brown quickly without steaming. Set aside and repeat with second batch.",
+            "In the same skillet, melt butter over medium heat. Add diced onions and sliced mushrooms; sauté until mushrooms are golden and tender.",
+            "Add minced garlic and cook for 30 seconds until fragrant. Pour in cooking cream and Dijon mustard; season with salt and pepper.",
+            "Simmer sauce gently for 2 minutes until it coats the back of a spoon.",
+            "Return seared beef and any resting juices back to the skillet. Toss together for just 60 seconds to heat through, then remove from heat and serve over rice, pasta, or mashed potatoes."
           ]
         },
         substitutions: {
-          ar: ["يمكن خلط نصف كوب زبادي مع نصف كوب قشطة/حليب في حال عدم توفر كريمة الطبخ."],
-          en: ["Substitute sour cream or yogurt + cream mix if cooking cream is unavailable."]
+          ar: [
+            "يمكن استبدال كريمة الطبخ بكوب حليب مضاف إليه ملعقة صغيرة نشا وملعقتين قشطة أو ساور كريم.",
+            "يمكن استخدام فطر معلب مصفى جيداً في حال عدم توفر الفطر الطازج."
+          ],
+          en: [
+            "Cooking cream can be substituted with sour cream or 1 cup whole milk whisked with 1 tsp cornstarch.",
+            "Canned drained mushrooms can replace fresh mushrooms in a pinch."
+          ]
         },
         familyNotes: {
-          ar: "السر في طراوة اللحم هو تشويحه على دفعتين بحرارة عالية جداً وعدم تركه يغلي في الكريمة أكثر من دقيقة قبل التقديم مباشرة.",
-          en: "Sear in small batches so meat browns rather than boils. Do not overcook meat in the sauce."
+          ar: "السر الأساسي لنجاح الستروجانوف بدون أن يصبح اللحم قاسياً هو تشويح اللحم على دفعتين بحرارة عالية جداً وعدم تركه في الصلصة لأكثر من دقيقة واحدة قبل التقديم مباشرة.",
+          en: "The critical family lesson is high-heat searing in small batches. Never let the beef boil in the sauce for more than a minute, or it loses tenderness."
         }
       },
       {
         id: "beef-burgers",
         category: "beef",
+        tags: ["beef", "quick"],
         isFavorite: false,
         name: { ar: "برجر اللحم البيتي البسيط", en: "Simple Homemade Beef Burgers" },
         desc: {
-          ar: "برجر عائلي سريع وصحي من 250 جم لحم بقري صافي بدون إضافات معقدة.",
-          en: "Quick, pure 250g beef smash-style family burgers without complex fillers."
+          ar: "برجر بيتي سريع وصافي (250 جم لحم) بدون إضافات معقدة مع سر عمل الفجوة في المنتصف لقرص متناسق.",
+          en: "Quick, pure 250g beef smash/skillet burger patties with an indented center for perfectly flat, juicy burgers."
         },
-        protein: { ar: "لحم مفروم", en: "Minced Beef" },
+        protein: { ar: "لحم بقري مفروم (80/20)", en: "Minced Beef (80/20)" },
         prepTime: "10 min",
         cookTime: "10 min",
         totalTime: "20 min",
         difficulty: { ar: "سهل جداً", en: "Very Easy" },
         baseServings: 2,
         equipment: {
-          ar: ["مقلاة صاج أو ستيل مسطحة"],
-          en: ["Cast iron skillet or flat pan"]
+          ar: ["مقلاة صاج أو ستيل مسطحة ثقيلة", "ملعقة برجر مسطحة (Spatula)"],
+          en: ["Heavy cast iron skillet / flat pan", "Flat metal spatula"]
         },
         ingredients: [
-          { name: { ar: "لحم مفروم (يفضل بنسبة دهن 20%)", en: "Minced beef (80/20)" }, amount: 250, unit: "g" },
-          { name: { ar: "ملح خشن وفلفل أسود مطحون", en: "Coarse salt & black pepper" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
-          { name: { ar: "خبز برجر (بريوش أو بطاطا)", en: "Burger buns" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
-          { name: { ar: "شرائح جبن شيدر", en: "Cheddar cheese slices" }, amount: 2, unit: { ar: "شريحة", en: "slices" } },
-          { name: { ar: "خس وطماطم وصوص البرجر المفضل", en: "Lettuce, tomato & house sauce" }, amount: 1, unit: { ar: "حسب الرغبة", en: "to taste" } }
+          { name: { ar: "لحم بقري مفروم طازج (نسبة دهن 20% تقريباً)", en: "Minced beef (approx 80/20 blend)" }, amount: 250, unit: "g" },
+          { name: { ar: "ملح طعام أو ملح خشن وفلفل أسود", en: "Coarse salt & ground black pepper" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "خبز برجر (بريوش أو كلاسيكي)", en: "Burger buns" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "شرائح جبنة شيدر سريعة الذوبان", en: "Cheddar cheese slices" }, amount: 2, unit: { ar: "شريحة", en: "slices" } },
+          { name: { ar: "زبدة لتحميص الخبز", en: "Butter for toasting buns" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "إضافات اختيارية: خس، شرائح طماطم، صوص برجر", en: "Toppings: lettuce, tomato slices, house sauce" }, amount: 1, unit: { ar: "حسب الرغبة", en: "to taste" } }
         ],
         prepSteps: {
-          ar: ["تقسيم اللحم إلى كرتين متساويتين (125 جم للقطعة) بدون عجن زائد.", "تحميص الخبز بالقليل من الزبدة."],
-          en: ["Divide 250g meat into two 125g loose balls. Do not overwork.", "Toast burger buns with a touch of butter."]
+          ar: [
+            "تقسيم الـ 250 جم لحم إلى كرتين متساويتين (125 جم لكل قرص) بدون عجن اللحم باليد كثيراً.",
+            "تشكيل القرص والضغط بالإبهام في منتصف كل قرص لعمل فجوة خفيفة تمنع انتفاخه أثناء الطبخ.",
+            "دهن الخبز بقليل من الزبدة وتجهيز الجبن والإضافات."
+          ],
+          en: [
+            "Divide 250g beef into two equal 125g balls without overhandling or kneading.",
+            "Shape into patties and press a gentle thumb indentation in the center of each to keep them flat while cooking.",
+            "Lightly butter burger buns and stage toppings."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "تسخين المقلاة وتحميص الخبز بالزبدة", en: "Heat pan & toast buns in butter" } },
-          { time: "00:04", text: { ar: "وضع كرات اللحم وضغطها بقوة ورش الملح والفلفل", en: "Place meat balls, smash flat, season generously" } },
-          { time: "00:07", text: { ar: "قلب البرجر ووضع شريحة الجبن لتذوب", en: "Flip patties and melt cheese on top" } },
-          { time: "00:09", text: { ar: "تطبيق الساندويتش مع الصوص والخضار والتقديم", en: "Assemble with sauce and toppings" } }
+          { time: "00:00", text: { ar: "تسخين المقلاة وتحميص خبز البرجر بالزبدة حتى يقرمش ثم رفعه", en: "Heat pan; toast buttered buns until golden and set aside" } },
+          { time: "00:03", text: { ar: "وضع أقراص اللحم في المقلاة الساخنة ورش الملح والفلفل على الوجه فوراً", en: "Place patties in hot pan; season tops generously with salt and pepper" } },
+          { time: "00:06", text: { ar: "قلب القرص ووضع شريحة الجبن وتغطية المقلاة 30 ثانية لتذوب", en: "Flip patty, immediately place cheese slice, cover briefly to melt" } },
+          { time: "00:08", text: { ar: "رفع اللحم وتركه يرتاح دقيقتين وتطبيق الساندويتش بالصوص والخضار", en: "Rest patties 2 mins, then assemble with toasted buns, sauce, and toppings" } }
         ],
         instructions: {
           ar: [
-            "قسّم 250 جم من اللحم إلى كرتين متساويتين. لا تخلط البهارات داخل اللحم.",
-            "سخّن مقلاة ثقيلة حتى تدخن، ضع كرة اللحم واضغطها بقوة لتصبح قرصاً، ثم رش الملح والفلفل الأسود فوراً.",
-            "اتركها تتحمر لمدة 2.5 دقيقة لتكتسب قشرة مقرمشة، ثم اقلبها وضع شريحة الجبن وغطها لثوانٍ لتذوب.",
-            "ادهن الخبز المحمص بالصوص وضع البرجر الساخن مع الخس والطماطم."
+            "قسّم اللحم إلى كرتين متساويتين وشكلهما على شكل أقراص برجر أعرض قليلاً من حجم الخبز، مع ضغط خفيف في منتصف كل قرص بالإبهام. لا تضع أي بهارات داخل اللحمة الآن.",
+            "سخّن مقلاة صاج أو مقلاة ثقيلة على نار عالية، وحمّص الخبز أولاً بمسحة زبدة حتى يصبح ذهبياً ومقرمشاً، ثم ارفعه جانباً.",
+            "في نفس المقلاة وهي ساخنة جداً، ضع أقراص اللحم ورش وجهها فوراً بالملح والفلفل الأسود. اتركها تنضج لمدة 2.5 إلى 3 دقائق دون تحريكها حتى تتكون قشرة محمرة لذيذة.",
+            "اقلب القرص ورش القليل من الملح والفلفل، ثم ضع شريحة الجبن فوق كل قرص فوراً، وغطّ المقلاة لثوانٍ معدودة حتى يذوب الجبن تماماً.",
+            "ارفع أقراص البرجر واتركها ترتاح دقيقتين على لوح التقطيع لتحتفظ بعصارتها.",
+            "ادهن الخبز المحمص بالصوص وضع الخس والطماطم وقرص البرجر بالجبن الذائب وقدمه مباشرة."
           ],
           en: [
-            "Divide 250g beef into two balls without overworking. Keep unseasoned until cooking.",
-            "Heat a heavy skillet. Place ball and smash firmly flat. Season generously with salt and pepper.",
-            "Sear 2.5 mins for a deep crust, flip, immediately add cheese slice, cover briefly to melt.",
-            "Assemble on toasted buns with sauce and lettuce."
+            "Divide beef into two loose patties slightly wider than your buns. Make a slight thumb indentation in the center of each patty. Keep meat unseasoned inside.",
+            "Heat a heavy skillet over medium-high heat. Toast buttered buns cut-side down until golden; set aside.",
+            "Place patties directly onto the smoking hot skillet. Season tops generously with salt and black pepper. Cook undisturbed for 2.5 to 3 minutes until a rich crust forms.",
+            "Flip patties, immediately top with cheddar slices, and cover with a lid for 30-45 seconds until cheese is melted.",
+            "Transfer patties to a warm plate and allow to rest for 2 minutes so juices redistribute.",
+            "Spread sauce on bottom bun, add lettuce, tomato, the rested cheesy patty, top bun, and serve."
           ]
         },
         substitutions: {
-          ar: ["يمكن استخدام لحم غنم مفروم أو خليط لحم بقري وغنم."],
-          en: ["Can use lamb mince or a beef/lamb blend."]
+          ar: [
+            "يمكن استبدال لحم البقر بلحم خروف مفروم دسم لعمل برجر خروف بيتي.",
+            "يمكن استخدام خبز بريوش أو خبز بطاطا أو خبز عربي عادي."
+          ],
+          en: [
+            "Minced lamb can replace beef for rich homemade lamb burgers.",
+            "Brioche, potato rolls, or classic sesame buns all work equally well."
+          ]
         },
         familyNotes: {
-          ar: "الـ 250 جم تصنع قطعتين برجر عائلية ممتازة مشبعة جداً (125 جم للقطعة). السر في عدم وضع بهارات داخل اللحمة بل رش الملح والفلفل فقط على المقلاة مباشرة.",
-          en: "250g makes 2 hearty 125g patties. Seasoning only on the hot pan makes it far juicier than mixing spices inside the mince."
+          ar: "الـ 250 جم تصنع قطعتين برجر بوزن 125 جم للقطعة، وهي الكمية المثالية لغداء أو عشاء سريع لشخصين وتتضاعف بسهولة عبر زر الحصص. سر الطراوة هو عدم خلط الملح داخل اللحمة المفرومة، بل رشه مباشرة على المقلاة الساخنة، مع عمل الفجوة بالإبهام لمنع انتفاخ القرص.",
+          en: "250g produces two 125g hearty patties — perfect for a fast 2-person meal and easily scalable via the servings buttons. Seasoning only on the hot pan and pressing a thumb dent in the center are our two golden rules."
         }
       },
       {
         id: "vermicelli-rice",
         category: "rice",
+        tags: ["rice", "quick", "favs"],
         isFavorite: true,
-        name: { ar: "أرز بالشعيرية (قدر عادي / طباخة الرز)", en: "Rice with Vermicelli (Stovetop & Cooker)" },
+        name: { ar: "الأرز بالشعيرية (طباخة الرز والغاز)", en: "Rice with Vermicelli (Rice Cooker & Stovetop)" },
         desc: {
-          ar: "الطبق الجانبي الأساسي لمطبخنا، مع تعليمات الطبخ على الغاز أو في طباخة الرز الكهربائية.",
-          en: "Our versatile family staple rice. Detailed for both stovetop and simple rice cookers."
+          ar: "الطبق الجانبي الأساسي لمطبخنا، مفلفل وناجح مع شرح تفصيلي لطباخة الرز البسيطة (Cook/Warm) وللقدر العادي.",
+          en: "Our staple family side dish. Perfectly fluffy with exact instructions for standard Cook/Warm rice cookers and stovetop."
         },
-        protein: { ar: "نباتي / بدون لحم", en: "Vegetarian" },
+        protein: { ar: "نباتي / بدون لحم", en: "Vegetarian / Side Dish" },
         prepTime: "5 min",
         cookTime: "20 min",
         totalTime: "25 min",
         difficulty: { ar: "سهل جداً", en: "Very Easy" },
         baseServings: 4,
         equipment: {
-          ar: ["طباخة أرز كهربائية (Rice Cooker) أو قدر غير لاصق"],
-          en: ["Rice cooker or non-stick pot"]
+          ar: ["طباخة أرز كهربائية (Cook/Warm) أو قدر غير لاصق للغاز", "مقلاة صغيرة لتحمير الشعيرية"],
+          en: ["Simple Cook/Warm Rice Cooker or non-stick stovetop pot", "Small frying pan"]
         },
         ingredients: [
-          { name: { ar: "أرز مصري أو بسمتي مغسول ومصفى", en: "Egyptian or Basmati rice, rinsed" }, amount: 2, unit: { ar: "أكواب", en: "cups" } },
-          { name: { ar: "شعيرية", en: "Vermicelli noodles" }, amount: 0.75, unit: { ar: "كوب", en: "cup" } },
-          { name: { ar: "سمن بلدي أو زيت نباتي", en: "Ghee or oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
-          { name: { ar: "ماء مغلي أو مرق دجاج", en: "Boiling water or broth" }, amount: 2.5, unit: { ar: "أكواب", en: "cups" } },
-          { name: { ar: "ملح", en: "Salt" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } }
+          { name: { ar: "أرز مصري أو أرز بسمتي مغسول ومصفى", en: "Egyptian or Basmati rice, rinsed & drained" }, amount: 2, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "شعيرية ناعمة", en: "Vermicelli noodles" }, amount: 0.75, unit: { ar: "كوب", en: "cup" } },
+          { name: { ar: "سمن بلدي أو زيت نباتي", en: "Ghee or cooking oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "ماء مغلي أو مرق دجاج/لحم ساخن", en: "Boiling water or hot broth" }, amount: 2.5, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "ملح طعام", en: "Fine salt" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } }
         ],
         prepSteps: {
-          ar: ["غسل الأرز جيداً وتصفيته من الماء.", "تجهيز الماء المغلي أو المرق الساخن."],
-          en: ["Rinse rice thoroughly and drain.", "Have boiling water or hot broth ready."]
+          ar: [
+            "غسل كوبي الأرز جيداً بالماء الفاتر وتصفيتهما بمصفاة ناعمة.",
+            "تجهيز الماء المغلي أو المرق الساخن ومعايرته بدقة."
+          ],
+          en: [
+            "Rinse 2 cups of rice thoroughly under running water and drain in a colander.",
+            "Boil water or heat chicken/meat broth and measure accurately."
+          ]
         },
         timeline: [
-          { time: "00:00", text: { ar: "تحمير الشعيرية في السمن حتى تصبح بنية ذهبية", en: "Brown vermicelli in ghee until golden brown" } },
-          { time: "00:04", text: { ar: "إضافة الأرز وتشويحه دقيقة مع الشعيرية والملح", en: "Toss rice with vermicelli to coat in ghee" } },
-          { time: "00:06", text: { ar: "إضافة الماء المغلي والانتقال لوضع الطبخ", en: "Add boiling water and simmer / push Cook" } },
-          { time: "00:20", text: { ar: "اكتمال النضج وراحة الرز 5 دقائق قبل التقديم", en: "Cooking complete, rest 5 mins, fluff with fork" } }
+          { time: "00:00", text: { ar: "تحمير الشعيرية في السمن على نار هادئة مع التحريك المستمر حتى تصبح ذهبية بنية", en: "Toast vermicelli in ghee over medium-low heat until golden-brown" } },
+          { time: "00:04", text: { ar: "نقل الشعيرية والأرز والماء المغلي والملح لطباخة الرز وضغط زر (Cook)", en: "Transfer vermicelli, rice, boiling water, and salt to Rice Cooker; press 'Cook'" } },
+          { time: "00:18", text: { ar: "تحول طباخة الرز تلقائياً لوضع التدفئة (Warm)", en: "Rice cooker automatically trips to 'Warm'" } },
+          { time: "00:23", text: { ar: "ترك الرز يرتاح 5 دقائق مغلقاً ثم تفليفه بالشوكة والتقديم", en: "Rest undisturbed for 5 mins, fluff with a fork, and serve hot" } }
         ],
         instructions: {
           ar: [
-            "خيار الغاز العادي: في قدر، سخّن السمن وحمر الشعيرية حتى يصبح لونها ذهبياً غامقاً. أضف الأرز المغسول وقلبه دقيقة، ثم اسكب الماء المغلي والملح. اتركه يغلي حتى يتشرب معظمه، ثم خفف النار لأدنى درجة وغطّ القدر 15 دقيقة.",
-            "خيار طباخة الرز (Rice Cooker): حمّر الشعيرية في مقلاة صغيرة على الغاز بالسمن، ثم اسكب الشعيرية المحمرة والأرز والماء المغلي والملح في طباخة الرز، واضغط زر (Cook) واتركها حتى تتحول تلقائياً إلى (Warm)."
+            "طريقة طباخة الرز الكهربائية (Rice Cooker - طريقتنا المفضلة): في مقلاة صغيرة على الغاز، سخن السمن وحمر الشعيرية مع التقليب المستمر حتى تأخذ لوناً بنياً ذهبياً متجانساً (انتبه حتى لا تحترق). اسكب الشعيرية المحمرة في وعاء طباخة الرز، وأضف فوقها الأرز المغسول والملح والماء المغلي (2.5 كوب). حرّكهم مرة واحدة، أغلق الغطاء واضغط زر (Cook). عندما يتحول الزر تلقائياً إلى (Warm)، اترك الغطاء مغلقاً لمدة 5 إلى 7 دقائق قبل فتحه وتفليف الرز بالشوكة.",
+            "طريقة القدر العادي على الغاز: في قدر متوسط، سخّن السمن وحمر الشعيرية حتى تصبح ذهبية بنية. أضف الأرز المغسول وقلبه مع الشعيرية والسمن لمدة دقيقة. اسكب الماء المغلي والملح، ودع الماء يغلي بقوة حتى يبدأ الأرز بامتصاص معظم السطح (دقيقتين). غطّ القدر بإحكام وخفف النار إلى أقل درجة ممكنة (شمعة) لمدة 15 دقيقة، ثم ارفعه عن النار واتركه يرتاح 5 دقائق مغطى قبل التقديم."
           ],
           en: [
-            "Stovetop Method: Melt ghee, sauté vermicelli until deep golden. Add rice and stir for 1 min. Pour in boiling water & salt. Bring to a boil, then reduce heat to lowest, cover, and steam for 15 mins.",
-            "Rice Cooker Method: Quickly toast vermicelli in a pan with ghee until golden, then dump vermicelli, rinsed rice, boiling water, and salt into the Rice Cooker bowl. Press 'Cook' and let it switch to 'Warm'."
+            "Rice Cooker Method (Our Recommended Everyday Technique): Toast vermicelli with ghee in a small pan on the stove over medium-low heat, stirring constantly until evenly golden-brown. Pour the toasted vermicelli into the Rice Cooker bowl. Add rinsed rice, salt, and 2.5 cups of boiling water. Stir once, close lid, and push 'Cook'. When the cooker clicks over to 'Warm', keep lid closed for 5-7 minutes to steam, then fluff with a rice paddle.",
+            "Stovetop Pot Method: Melt ghee in a pot, add vermicelli and stir until deep golden. Add rinsed rice and toast together for 1 minute to coat grains. Pour in boiling water and salt. Let boil vigorously until water level drops to the surface of the rice. Cover with a tight lid, reduce heat to the lowest setting, and cook for 15 minutes. Remove from heat and rest 5 minutes before serving."
           ]
         },
         substitutions: {
           ar: [
-            "للرز المصري: استخدم 1 كوب ماء لكل 1 كوب رز + ربع كوب إضافي للشعيرية.",
-            "للرز البسمتي: استخدم 1.5 كوب ماء لكل 1 كوب رز."
+            "للأرز المصري: نسبة الماء 1.25 كوب ماء لكل كوب أرز + ربع كوب إضافي للشعيرية.",
+            "للأرز البسمتي: نسبة الماء 1.5 كوب ماء لكل كوب أرز + ربع كوب إضافي للشعيرية.",
+            "يمكن استبدال السمن البلدي بزيت نباتي أو زبدة."
           ],
           en: [
-            "For Egyptian rice: 1:1.15 water-to-rice ratio + splash for vermicelli.",
-            "For Basmati rice: 1:1.5 water-to-rice ratio."
+            "For Egyptian Rice: 1.25 cups water per 1 cup rice + 1/4 cup extra for vermicelli.",
+            "For Basmati Rice: 1.5 cups water per 1 cup rice + 1/4 cup extra for vermicelli.",
+            "Can replace ghee with neutral vegetable oil or unsalted butter."
           ]
         },
         familyNotes: {
-          ar: "تحمير الشعيرية خارج طباخة الرز ثم سكبها بالداخل مع الماء المغلي هو أسرع وأضمن تكنيك للحصول على رز نثري ومفلفل بدون حرق الشعيرية.",
-          en: "Toasting vermicelli separately on the stove before dumping into the basic rice cooker gives 100% consistent results without scorching."
+          ar: "تحمير الشعيرية في مقلاة صغيرة على الغاز ثم سكبها داخل طباخة الرز الكهربائية البسيطة مع الماء المغلي هو أفضل تكنيك عائلي جربناه؛ فهو يمنع احتراق الشعيرية نهائياً داخل الطباخة ويعطي ركيزة ممتازة تتيح لنا التركيز على طبخ داوود باشا أو الستروجانوف في نفس الوقت.",
+          en: "Toasting the vermicelli separately on the stovetop before dumping into the Cook/Warm rice cooker prevents scorching and delivers 100% consistent, fluffy rice while freeing up our hands for the main protein."
         }
       }
     ];
@@ -585,7 +677,7 @@
           beef: "لحم بقري",
           lamb: "لحم خروف",
           rice: "أرز ومقبلات",
-          quick: "سريع وخفيف",
+          quick: "وجبات سريعة",
           favs: "المفضلة"
         }
       },
@@ -647,7 +739,7 @@
       renderCategoryFilters();
       renderRecipeList();
       if (currentRecipe) {
-        renderRecipeDetail(currentRecipe.id);
+        renderRecipeDetail();
       }
       lucide.createIcons();
     }
@@ -675,6 +767,7 @@
         { id: 'beef', label: I18N[currentLang].cats.beef },
         { id: 'lamb', label: I18N[currentLang].cats.lamb },
         { id: 'rice', label: I18N[currentLang].cats.rice },
+        { id: 'quick', label: I18N[currentLang].cats.quick },
         { id: 'favs', label: I18N[currentLang].cats.favs },
       ];
 
@@ -712,7 +805,8 @@
         const matchesCat = 
           currentCategory === 'all' ? true :
           currentCategory === 'favs' ? r.isFavorite :
-          r.category === currentCategory;
+          currentCategory === 'quick' ? (r.tags && r.tags.includes('quick')) :
+          (r.category === currentCategory || (r.tags && r.tags.includes(currentCategory)));
 
         const nameAr = r.name.ar.toLowerCase();
         const nameEn = r.name.en.toLowerCase();
@@ -840,7 +934,7 @@
                 <i data-lucide="scale" class="w-5 h-5 text-brand-500"></i>
                 ${t.ingredients}
               </h3>
-              <p class="text-xs text-warm-800/60">${currentLang === 'ar' ? 'المقادير تتغير تلقائياً حسب عدد الأشخاص' : 'Amounts scale automatically'}</p>
+              <p class="text-xs text-warm-800/60">${currentLang === 'ar' ? 'المقادير تتغير تلقائياً حسب عدد الحصص' : 'Amounts scale automatically with servings'}</p>
             </div>
 
             <div class="flex items-center gap-3 bg-warm-50 px-3 py-1.5 rounded-2xl border border-warm-200 self-start sm:self-auto">
@@ -862,7 +956,7 @@
               return `
                 <li class="flex items-center justify-between py-1.5 px-3 rounded-xl hover:bg-warm-50 transition border border-transparent hover:border-warm-100 text-sm">
                   <span class="text-warm-900 font-medium">${ing.name[currentLang]}</span>
-                  <span class="font-bold text-brand-600 bg-brand-50/60 px-2 py-0.5 rounded-lg border border-brand-100/50">
+                  <span class="font-bold text-brand-600 bg-brand-50/60 px-2.5 py-0.5 rounded-lg border border-brand-100/50 whitespace-nowrap">
                     ${scaledAmount} ${unitStr}
                   </span>
                 </li>
@@ -901,7 +995,7 @@
           </p>
 
           <div class="relative border-r-2 rtl:border-r-2 rtl:border-l-0 ltr:border-l-2 ltr:border-r-0 border-brand-300 mr-2 ltr:mr-0 ltr:ml-2 space-y-4 py-1">
-            ${r.timeline.map((item, idx) => `
+            ${r.timeline.map((item) => `
               <div class="relative pr-6 rtl:pr-6 rtl:pl-0 ltr:pl-6 ltr:pr-0">
                 <span class="absolute -right-2 rtl:-right-2 rtl:left-auto ltr:-left-2 ltr:right-auto top-1 w-4 h-4 rounded-full bg-white border-2 border-brand-500"></span>
                 <span class="inline-block font-mono text-xs font-bold text-brand-700 bg-white/80 px-2 py-0.5 rounded border border-brand-200 mb-1">${item.time}</span>
@@ -982,14 +1076,18 @@
 
       if (viewName === 'home') {
         document.getElementById('view-home').classList.remove('hidden');
-        homeBtn.classList.replace('text-warm-800/60', 'text-brand-600');
-        aboutBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+        if (homeBtn && aboutBtn) {
+          homeBtn.classList.replace('text-warm-800/60', 'text-brand-600');
+          aboutBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+        }
       } else if (viewName === 'recipe') {
         document.getElementById('view-recipe').classList.remove('hidden');
       } else if (viewName === 'about') {
         document.getElementById('view-about').classList.remove('hidden');
-        aboutBtn.classList.replace('text-warm-800/60', 'text-brand-600');
-        homeBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+        if (homeBtn && aboutBtn) {
+          aboutBtn.classList.replace('text-warm-800/60', 'text-brand-600');
+          homeBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+        }
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -998,4 +1096,5 @@
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
+</html>
 </html>
