@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مطبخنا | Our Kitchen</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fdf8f6',
+              100: '#f2e8e5',
+              200: '#eaddd7',
+              500: '#c25e3e',
+              600: '#a3482a',
+              700: '#84351d',
+            },
+            warm: {
+              50: '#faf9f5',
+              100: '#f3f1e9',
+              800: '#2d2b28',
+              900: '#1a1917'
+            }
+          },
+          fontFamily: {
+            ar: ['Cairo', 'sans-serif'],
+            en: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #faf9f5;
+      color: #2d2b28;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body.lang-en {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20 md:pb-0">
+
+  <header class="sticky top-0 z-40 bg-warm-50/90 backdrop-blur-md border-b border-warm-100">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')">
+        <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center shadow-sm">
+          <i data-lucide="chef-hat" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold leading-tight text-warm-900 tracking-tight" id="nav-title">مطبخنا</h1>
+          <p class="text-xs text-brand-600 font-medium" id="nav-subtitle">Our Kitchen</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-warm-200 text-sm font-semibold text-warm-800 shadow-sm hover:bg-warm-100 transition active:scale-95">
+          <i data-lucide="globe" class="w-4 h-4 text-brand-500"></i>
+          <span id="lang-btn-text">English</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6">
+    
+    <div id="view-home">
+      <section class="mb-6 bg-gradient-to-br from-brand-50 to-orange-50/40 p-5 md:p-6 rounded-3xl border border-brand-100">
+        <span class="inline-block px-3 py-1 bg-brand-500/10 text-brand-600 rounded-full text-xs font-bold mb-2" id="hero-tag">وصفات العائلة</span>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-warm-900 mb-1" id="hero-title">مطبخنا | Our Kitchen</h2>
+        <p class="text-sm md:text-base text-warm-800/80" id="hero-desc">وصفاتنا اللي جربناها وحبيناها، بمقاديرنا وتعديلاتنا الخاصة.</p>
+      </section>
+
+      <section class="space-y-3 mb-6">
+        <div class="relative">
+          <i data-lucide="search" class="w-5 h-5 absolute top-3.5 right-3.5 rtl:right-3.5 rtl:left-auto ltr:left-3.5 ltr:right-auto text-warm-800/40"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="ابحث عن وصفة أو مكون..." 
+            oninput="handleSearch(this.value)"
+            class="w-full py-3 px-11 rounded-2xl bg-white border border-warm-200 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm shadow-sm transition placeholder:text-warm-800/40"
+          >
+        </div>
+
+        <div class="flex gap-2 overflow-x-auto pb-1 hide-scrollbar" id="category-filters">
+          </div>
+      </section>
+
+      <section>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-bold text-lg text-warm-900" id="recipes-count-heading">جميع الوصفات</h3>
+          <span class="text-xs text-warm-800/60 font-semibold" id="recipes-count"></span>
+        </div>
+        <div id="recipe-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          </div>
+      </section>
+    </div>
+
+    <div id="view-recipe" class="hidden">
+      <button onclick="navigate('home')" class="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-xl bg-white border border-warm-200 text-sm font-semibold text-warm-800 shadow-sm active:scale-95 transition">
+        <i data-lucide="arrow-right" class="w-4 h-4 rtl:rotate-0 ltr:rotate-180"></i>
+        <span id="back-btn-text">العودة للوصفات</span>
+      </button>
+
+      <article id="recipe-detail-container" class="space-y-6">
+        </article>
+    </div>
+
+    <div id="view-about" class="hidden">
+      <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-4 text-center">
+        <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
+          <i data-lucide="heart" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-warm-900" id="about-title">عن مطبخنا</h2>
+        <p class="text-warm-800/80 leading-relaxed text-sm md:text-base max-w-md mx-auto" id="about-text">
+          هذا الموقع مخصص لتوثيق أكلاتنا العائلية المفضلة، بالأوزان والملاحظات الدقيقة اللي ناسبت ذوقنا، بدون تعقيد وبأسهل طريقة للطبخ والتنسيق.
+        </p>
+        <div class="pt-4 border-t border-warm-100 flex flex-col gap-1 items-center text-xs text-warm-800/50">
+          <span>الإصدار V1.0 • صُنع بكل حب للعائلة</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-warm-200 py-2 px-6 flex justify-around items-center z-40">
+    <button onclick="navigate('home')" id="nav-btn-home" class="flex flex-col items-center gap-1 text-brand-600 font-bold text-xs">
+      <i data-lucide="book-open" class="w-5 h-5"></i>
+      <span id="bottom-nav-recipes">الوصفات</span>
+    </button>
+    <button onclick="navigate('about')" id="nav-btn-about" class="flex flex-col items-center gap-1 text-warm-800/60 font-semibold text-xs">
+      <i data-lucide="info" class="w-5 h-5"></i>
+      <span id="bottom-nav-about">عن المطبخ</span>
+    </button>
+  </nav>
+
+  <script>
+    // --- RECIPE DATA STORE ---
+    const RECIPES = [
+      {
+        id: "chicken-biryani",
+        category: "chicken",
+        isFavorite: true,
+        name: { ar: "برياني دجاج العائلة", en: "Family Chicken Biryani" },
+        desc: {
+          ar: "برياني متوازن النكهات ومضبوط بكمية دجاج 750 جم مع جدول زمني لتزامن الرز والدجاج.",
+          en: "Balanced aromatic chicken biryani with 750g chicken and synchronized cooking timeline."
+        },
+        protein: { ar: "دجاج", en: "Chicken" },
+        prepTime: "25 min",
+        cookTime: "40 min",
+        totalTime: "65 min",
+        difficulty: { ar: "متوسط", en: "Medium" },
+        baseServings: 4,
+        equipment: {
+          ar: ["قدر تيفال عميق/كبير", "خلاط طماطم", "مصفاة رز"],
+          en: ["Large deep pot", "Tomato blender", "Rice colander"]
+        },
+        ingredients: [
+          { name: { ar: "دجاج (صدور وأفخاذ بدون عظم)", en: "Boneless chicken (breast & thigh)" }, amount: 750, unit: "g" },
+          { name: { ar: "أرز بسمتي مغسول ومنقوع", en: "Basmati rice, soaked" }, amount: 2.5, unit: { ar: "كوب", en: "cups" } },
+          { name: { ar: "بصل كبير مفروم ناعم", en: "Large onion, finely chopped" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "طماطم معصورة بالخلاط", en: "Tomatoes, blended" }, amount: 3, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "لبن زبادي", en: "Plain yogurt" }, amount: 0.5, unit: { ar: "كوب", en: "cup" } },
+          { name: { ar: "ثوم وزنجبيل مهروس", en: "Garlic & ginger paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "بهارات برياني مشكلة وكركم", en: "Biryani spice mix & turmeric" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "زعفران منقوع بماء كادي أو ورد", en: "Saffron in rose/kewra water" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+        ],
+        prepSteps: {
+          ar: ["تقطيع الدجاج لمكعبات متوسطة وتتبيله بالزبادي ونصف البهارات.", "نقع الأرز البسمتي بماء دافئ 20 دقيقة.", "خلط الطماطم بالخلاط الكهربائي."],
+          en: ["Cut chicken into medium cubes; marinate with yogurt & half spices.", "Soak basmati rice in warm water for 20 mins.", "Blend the tomatoes smooth."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "تجهيز وتقطيع الدجاج وتتبيله بالزبادي", en: "Prep & marinate chicken with yogurt" } },
+          { time: "00:10", text: { ar: "قلي البصل وإضافة الثوم والزنجبيل وخليط الدجاج", en: "Sauté onions, ginger-garlic, & sear chicken" } },
+          { time: "00:20", text: { ar: "إضافة الطماطم والبهارات وترك الدجاج يتسبك على نار هادئة", en: "Add blended tomatoes & simmer gravy" } },
+          { time: "00:25", text: { ar: "غلي ماء الأرز مع البهارات الصحيحة وبدء السلق 70%", en: "Boil water for rice and parboil for 6-7 mins" } },
+          { time: "00:35", text: { ar: "تطبيق طبقات الأرز والدجاج وإضافة الزعفران", en: "Layer rice over chicken gravy and add saffron" } },
+          { time: "00:45", text: { ar: "تهدئة النار تماماً للتبخير (Dum) لمدة 15 دقيقة", en: "Dum cook on lowest heat for 15 mins" } },
+          { time: "01:00", text: { ar: "راحة 5 دقائق ثم التقديم", en: "Rest 5 mins and serve" } }
+        ],
+        instructions: {
+          ar: [
+            "في قدر كبير، احمس البصل حتى يصبح ذهبياً غامقاً، ثم أضف الثوم والزنجبيل والدجاج المتبل وشوحه جيداً.",
+            "أضف الطماطم المخلوطة والبهارات واترك الدجاج ينضج على نار هادئة حتى تثقل المرقة.",
+            "في قدر منفصل، اسلق الأرز في ماء مملح حتى ينضج 70% وصفّه.",
+            "ضع طبقة من الرز فوق مرقة الدجاج، ووزع الزعفران على الوجه.",
+            "غطّ القدر بإحكام على نار هادئة جداً لمدة 15 دقيقة حتى يكتمل النضج."
+          ],
+          en: [
+            "Sauté onions until deep golden, then add ginger-garlic paste and chicken; sear well.",
+            "Add blended tomatoes and spices. Simmer until chicken is cooked and gravy is rich.",
+            "In another pot, boil basmati rice until 70% done, then drain.",
+            "Layer the rice over the chicken sauce and drizzle saffron on top.",
+            "Cover tightly on very low heat (Dum) for 15 mins to steam."
+          ]
+        },
+        substitutions: {
+          ar: [
+            "في حال عدم توفر طماطم طازجة، استبدلها بـ 2 ملعقة كبيرة معجون طماطم مذابة بنصف كوب ماء.",
+            "يمكن استخدام صدور دجاج كاملة أو خليط مع الأفخاذ."
+          ],
+          en: [
+            "No fresh tomato: substitute with 2 tbsp tomato paste diluted in 1/2 cup warm water.",
+            "Can use exclusively chicken breast or thighs based on preference."
+          ]
+        },
+        familyNotes: {
+          ar: "الـ 750 جم دجاج أعطت توازناً ممتازاً مع كوبين ونصف رز بدون أن يطغى اللحم على الأرز. خلط الطماطم بالخلاط أعطى قوام مرقة أنعم وألذ بكثير من التقطيع العادي.",
+          en: "750g of chicken is the sweet spot for 2.5 cups of rice. Blending the fresh tomatoes made the gravy significantly smoother and richer than chopped tomatoes."
+        }
+      },
+      {
+        id: "mansaf",
+        category: "lamb",
+        isFavorite: true,
+        name: { ar: "منسف أردني بالجميد السائل", en: "Jordanian Mansaf (Liquid Jameed)" },
+        desc: {
+          ar: "منسف بلحم كتف الخروف والجميد السائل المخفف باللبن مع الرز المصري الأصفر.",
+          en: "Authentic Mansaf with lamb shoulder, liquid jameed, and yellow Egyptian rice."
+        },
+        protein: { ar: "لحم خروف", en: "Lamb" },
+        prepTime: "20 min",
+        cookTime: "90 min",
+        totalTime: "110 min",
+        difficulty: { ar: "متوسط", en: "Medium" },
+        baseServings: 6,
+        equipment: {
+          ar: ["قدر ضغط أو قدر كبير للحم", "قدر رز كهربائي (Rice Cooker) أو قدر عادي", "سدر للتقديم"],
+          en: ["Pressure pot or large soup pot", "Rice cooker or standard pot", "Large serving platter"]
+        },
+        ingredients: [
+          { name: { ar: "كتف خروف مقطع قطع كبيرة", en: "Lamb shoulder, large chunks" }, amount: 1600, unit: "g" },
+          { name: { ar: "جميد سائل جاهز", en: "Liquid Jameed" }, amount: 1000, unit: "ml" },
+          { name: { ar: "لبن زبادي رائب (لتخفيف الملوحة)", en: "Plain yogurt" }, amount: 250, unit: "g" },
+          { name: { ar: "أرز مصري (حبة متوسطة)", en: "Egyptian/medium grain rice" }, amount: 3, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "سمن بلدي", en: "Ghee" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "كركم / بهار منسف أصفر", en: "Turmeric / Mansaf spice" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "خبز شراك / صاج ومكسرات مقلية", en: "Shrak bread & toasted almonds" }, amount: 2, unit: { ar: "رغيف", en: "breads" } }
+        ],
+        prepSteps: {
+          ar: ["غسل اللحم وسلقه مع البهارات الصحيحة لإزالة الزفرة.", "غسل ونقع الأرز المصري 15 دقيقة.", "خلط الجميد السائل مع الزبادي في قدر جانبي."],
+          en: ["Wash lamb and boil with aromatics to skim broth.", "Rinse and soak Egyptian rice for 15 mins.", "Whisk liquid jameed with yogurt."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "بدء سلق اللحم مع بصلة وبهارات صحيحة", en: "Start boiling lamb with aromatics" } },
+          { time: "00:30", text: { ar: "خلط الجميد واللبن وغليانه مع التحريك المستمر", en: "Whisk and boil Jameed-yogurt sauce" } },
+          { time: "00:45", text: { ar: "نقل اللحم ومرقته المصفاة إلى قدر الجميد ليكمل نضجه", en: "Transfer lamb and strained broth into jameed" } },
+          { time: "00:55", text: { ar: "تشغيل قدر الرز الكهربائي (Cook) مع السمن والكركم", en: "Start Rice Cooker with ghee and turmeric" } },
+          { time: "01:25", text: { ar: "الرز واللحم جاهزان بالتزامن - سكب الجميد والتقديم", en: "Rice & lamb ready together; assemble on Shrak" } }
+        ],
+        instructions: {
+          ar: [
+            "اسلق اللحم حتى يوشك على النضج مع إزالة الرغوة والزفرة باستمرار.",
+            "في قدر آخر، اخلط الجميد السائل والزبادي والكركم وضعه على النار مع التحريك المستمر باتجاه واحد حتى يغلي.",
+            "أضف مرق اللحم المصفى وقطع اللحم إلى الجميد واتركه يتسبك 25 دقيقة.",
+            "في قدر الرز (أو طباخة الأرز): ضع الأرز مع السمن والكركم والماء والملح واضغط زر Cook.",
+            "في سدر التقديم: افرد خبز الشراك وشربه بالجميد، ثم اسكب الرز الأصفر ورتب اللحم وزينه باللوز المقلي."
+          ],
+          en: [
+            "Boil the lamb chunks with aromatics until tender, skimming any foam.",
+            "In another pot, whisk liquid jameed, yogurt, and turmeric. Bring to a boil stirring constantly in one direction.",
+            "Add strained lamb broth and lamb chunks to the boiling jameed; simmer for 25 mins.",
+            "In the Rice Cooker: add Egyptian rice, water, ghee, turmeric, salt, and hit 'Cook'.",
+            "To serve: layer Shrak bread soaked with jameed sauce, spread yellow rice, top with lamb and toasted nuts."
+          ]
+        },
+        substitutions: {
+          ar: [
+            "يمكن استبدال الرز المصري برز بسمتي أو خليط 50/50.",
+            "إذا كان الجميد ثقيلاً أو مالحاً جداً، زد كمية الزبادي أو مرق اللحم غير المملح."
+          ],
+          en: [
+            "Egyptian rice can be swapped with Basmati or a 50/50 mix.",
+            "If jameed is too salty/pungent, add more yogurt or unsalted meat broth to mellow it."
+          ]
+        },
+        familyNotes: {
+          ar: "الجميد السائل مع الزبادي يعطي قواماً ناعماً وخفيفاً على المعدة. الرز المصري في طباخة الرز البسيطة (Cook/Warm) ضبط بنسبة 1 كوب رز إلى 1.25 كوب ماء مع ملعقة سمنة ورشة كركم للون الأصفر الملكي.",
+          en: "Liquid jameed lightened with yogurt creates the perfect consistency without harsh saltiness. 3 cups Egyptian rice in the basic rice cooker needed 3.75 cups water and turmeric for that vibrant yellow color."
+        }
+      },
+      {
+        id: "dawood-basha",
+        category: "beef",
+        isFavorite: false,
+        name: { ar: "داوود باشا مع الأرز", en: "Dawood Basha (Meatballs in Tomato Sauce)" },
+        desc: {
+          ar: "كرات لحم مفروم 500 جم متبلة في صلصة طماطم مسبكة، تقدم مع الرز بالشعيرية.",
+          en: "500g minced beef meatballs in rich tomato sauce, served with vermicelli rice."
+        },
+        protein: { ar: "لحم مفروم", en: "Minced Beef" },
+        prepTime: "15 min",
+        cookTime: "30 min",
+        totalTime: "45 min",
+        difficulty: { ar: "سهل", en: "Easy" },
+        baseServings: 4,
+        equipment: {
+          ar: ["مقلاة عميقة", "قدر للرز بالشعيرية"],
+          en: ["Deep frying pan/skillet", "Pot or Rice Cooker"]
+        },
+        ingredients: [
+          { name: { ar: "لحم بقري مفروم ناعم", en: "Minced beef" }, amount: 500, unit: "g" },
+          { name: { ar: "بصلة صغيرة مفرومة ناعم للحم", en: "Small onion, grated for meat" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "بصل مقطع شرائح للصلصة", en: "Onion, sliced for sauce" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "عصير طماطم أو طماطم معصورة", en: "Blended tomatoes" }, amount: 2, unit: { ar: "كوب", en: "cups" } },
+          { name: { ar: "معجون طماطم", en: "Tomato paste" }, amount: 1.5, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "بهار مشكل وقرفة وملح وفلفل", en: "Seven spices, cinnamon, salt & pepper" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "دبس رمان (اختياري)", en: "Pomegranate molasses (optional)" }, amount: 1, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+        ],
+        prepSteps: {
+          ar: ["تتبيل اللحم بالبصل المبشور والبهارات وتكويره كرات صغيرة متساوية.", "تقطيع بصل الصلصة شرائح رقيقة."],
+          en: ["Season beef with grated onion and spices, roll into uniform small meatballs.", "Slice onions for sauce."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "تكوير اللحم المفروم وتشويحه في المقلاة", en: "Shape and brown meatballs in skillet" } },
+          { time: "00:10", text: { ar: "بدء تحمير شعيرية الرز وتشغيل الرز", en: "Start vermicelli rice in pot or cooker" } },
+          { time: "00:15", text: { ar: "حمس شرائح البصل وإضافة صلصة الطماطم", en: "Sauté sliced onions, add tomato sauce & paste" } },
+          { time: "00:25", text: { ar: "إرجاع الكرات للصلصة لتتسبك مع دبس الرمان", en: "Simmer meatballs in tomato sauce with pomegranate molasses" } },
+          { time: "00:35", text: { ar: "التقديم المباشر مع الرز الساخن", en: "Serve immediately with hot vermicelli rice" } }
+        ],
+        instructions: {
+          ar: [
+            "تبل اللحم المفروم بالملح والفلفل والقرفة وشكل كرات صغيرة.",
+            "شوّح كرات اللحم في ملعقة زيت حتى تتحمر من الخارج، ثم ارفعها جانباً.",
+            "في نفس المقلاة، شوّح شرائح البصل حتى تذبل، ثم أضف معجون الطماطم والطماطم المعصورة والبهارات.",
+            "أرجع كرات اللحم للصلصة واتركها تغلي على نار هادئة 15 دقيقة حتى تتسبك.",
+            "أضف ملعقة دبس الرمان في آخر دقيقتين وقدمها مع الرز بالشعيرية."
+          ],
+          en: [
+            "Season minced beef, form into balls, and brown in skillet with olive oil. Set aside.",
+            "In same pan, sauté sliced onions until translucent. Stir in tomato paste, blended tomatoes, and spices.",
+            "Return meatballs into sauce and simmer gently for 15 minutes.",
+            "Finish with a spoon of pomegranate molasses and serve over vermicelli rice."
+          ]
+        },
+        substitutions: {
+          ar: ["يمكن استبدال عصير الطماطم بملعقتي معجون طماطم مذابة بكوبين ماء دافئ."],
+          en: ["Can substitute blended fresh tomato with 2 tbsp paste in 2 cups warm broth/water."]
+        },
+        familyNotes: {
+          ar: "الـ 500 جم مفروم تكفي 4 أشخاص ممتازاً مع الرز. تشغيل الرز بالشعيرية في طباخة الرز يوفر وقتاً ويجعل الطبخة تنتهي في نصف ساعة فقط.",
+          en: "500g beef is ideal for 4 people. Making the vermicelli rice in the rice cooker keeps the whole dinner under 35 minutes."
+        }
+      },
+      {
+        id: "beef-stroganoff",
+        category: "beef",
+        isFavorite: false,
+        name: { ar: "بيف ستروجانوف سريع", en: "Quick Beef Stroganoff" },
+        desc: {
+          ar: "شرائح لحم بقري 500 جم مع الفطر وصلصة الكريمة الغنية والماسترد.",
+          en: "500g beef strips with mushrooms and rich sour/cooking cream Dijon sauce."
+        },
+        protein: { ar: "شرائح لحم", en: "Beef Strips" },
+        prepTime: "15 min",
+        cookTime: "20 min",
+        totalTime: "35 min",
+        difficulty: { ar: "سهل", en: "Easy" },
+        baseServings: 3,
+        equipment: {
+          ar: ["مقلاة ستيل أو تيفال واسعة جداً للتشويح العالي"],
+          en: ["Wide skillet for high-heat searing"]
+        },
+        ingredients: [
+          { name: { ar: "شرائح لحم بقري ستيك رفيعة", en: "Beef stroganoff strips" }, amount: 500, unit: "g" },
+          { name: { ar: "فطر طازج مقطع شرائح", en: "Fresh mushrooms, sliced" }, amount: 200, unit: "g" },
+          { name: { ar: "بصلة متوسطة مقطعة ناعم", en: "Medium onion, finely diced" }, amount: 1, unit: { ar: "حبة", en: "pc" } },
+          { name: { ar: "ثوم مهروس", en: "Garlic, minced" }, amount: 2, unit: { ar: "فص", en: "cloves" } },
+          { name: { ar: "كريمة طبخ أو ساور كريم", en: "Cooking cream or sour cream" }, amount: 1, unit: { ar: "كوب", en: "cup" } },
+          { name: { ar: "خردل ديجون / ماسترد", en: "Dijon mustard" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "زبدة وزيت زيتون", en: "Butter & olive oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } }
+        ],
+        prepSteps: {
+          ar: ["تجفيف شرائح اللحم بمناديل المطبخ وتتبيلها بملح وفلفل أسود.", "تقطيع الفطر والبصل."],
+          en: ["Pat beef dry with paper towels; season with salt and pepper.", "Slice mushrooms and onions."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "تسخين المقلاة لأعلى حرارة وتشويح اللحم سريعاً", en: "High-heat sear beef strips in batches (2-3 mins)" } },
+          { time: "00:08", text: { ar: "حمس البصل والفطر في نفس المقلاة مع الزبدة", en: "Sauté onions & mushrooms in leftover browned pan" } },
+          { time: "00:15", text: { ar: "إضافة الثوم ثم الكريمة والماسترد وتخفيف النار", en: "Add garlic, cream & Dijon; simmer to thicken" } },
+          { time: "00:20", text: { ar: "إرجاع اللحم وعصارته لدقيقة واحدة والتقديم فوراً", en: "Return beef & resting juices for 1 min; serve" } }
+        ],
+        instructions: {
+          ar: [
+            "سخّن المقلاة جيداً مع زيت، وشوّح شرائح اللحم على دفعات على نار عالية لمدة دقيقتين حتى تتحمر فقط دون أن تفقد طراوتها، ثم ارفعها جانباً.",
+            "في نفس المقلاة، أضف الزبدة وحمر البصل والفطر حتى يذبل ويكتسب لوناً شهياً.",
+            "أضف الثوم، ثم اسكب كريمة الطبخ والماسترد ورشة فلفل أسود واتركها تغلي دقيقتين.",
+            "أعد شرائح اللحم وعصارتها إلى المقلاة لمدة دقيقة واحدة لتتجانس النكهات وقدمها مع بطاطا مهروسة أو أرز أو باستا."
+          ],
+          en: [
+            "Sear beef in a smoking hot pan with oil in batches (2 mins max) so it stays tender. Set aside.",
+            "In same pan, melt butter and sauté sliced onions and mushrooms until golden.",
+            "Add garlic, then pour in cream, Dijon mustard, and a pinch of salt/pepper. Simmer 2 mins.",
+            "Return beef and pan juices for 60 seconds. Serve immediately over rice, pasta, or mashed potatoes."
+          ]
+        },
+        substitutions: {
+          ar: ["يمكن خلط نصف كوب زبادي مع نصف كوب قشطة/حليب في حال عدم توفر كريمة الطبخ."],
+          en: ["Substitute sour cream or yogurt + cream mix if cooking cream is unavailable."]
+        },
+        familyNotes: {
+          ar: "السر في طراوة اللحم هو تشويحه على دفعتين بحرارة عالية جداً وعدم تركه يغلي في الكريمة أكثر من دقيقة قبل التقديم مباشرة.",
+          en: "Sear in small batches so meat browns rather than boils. Do not overcook meat in the sauce."
+        }
+      },
+      {
+        id: "beef-burgers",
+        category: "beef",
+        isFavorite: false,
+        name: { ar: "برجر اللحم البيتي البسيط", en: "Simple Homemade Beef Burgers" },
+        desc: {
+          ar: "برجر عائلي سريع وصحي من 250 جم لحم بقري صافي بدون إضافات معقدة.",
+          en: "Quick, pure 250g beef smash-style family burgers without complex fillers."
+        },
+        protein: { ar: "لحم مفروم", en: "Minced Beef" },
+        prepTime: "10 min",
+        cookTime: "10 min",
+        totalTime: "20 min",
+        difficulty: { ar: "سهل جداً", en: "Very Easy" },
+        baseServings: 2,
+        equipment: {
+          ar: ["مقلاة صاج أو ستيل مسطحة"],
+          en: ["Cast iron skillet or flat pan"]
+        },
+        ingredients: [
+          { name: { ar: "لحم مفروم (يفضل بنسبة دهن 20%)", en: "Minced beef (80/20)" }, amount: 250, unit: "g" },
+          { name: { ar: "ملح خشن وفلفل أسود مطحون", en: "Coarse salt & black pepper" }, amount: 1, unit: { ar: "ملعقة صغيرة", en: "tsp" } },
+          { name: { ar: "خبز برجر (بريوش أو بطاطا)", en: "Burger buns" }, amount: 2, unit: { ar: "حبة", en: "pcs" } },
+          { name: { ar: "شرائح جبن شيدر", en: "Cheddar cheese slices" }, amount: 2, unit: { ar: "شريحة", en: "slices" } },
+          { name: { ar: "خس وطماطم وصوص البرجر المفضل", en: "Lettuce, tomato & house sauce" }, amount: 1, unit: { ar: "حسب الرغبة", en: "to taste" } }
+        ],
+        prepSteps: {
+          ar: ["تقسيم اللحم إلى كرتين متساويتين (125 جم للقطعة) بدون عجن زائد.", "تحميص الخبز بالقليل من الزبدة."],
+          en: ["Divide 250g meat into two 125g loose balls. Do not overwork.", "Toast burger buns with a touch of butter."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "تسخين المقلاة وتحميص الخبز بالزبدة", en: "Heat pan & toast buns in butter" } },
+          { time: "00:04", text: { ar: "وضع كرات اللحم وضغطها بقوة ورش الملح والفلفل", en: "Place meat balls, smash flat, season generously" } },
+          { time: "00:07", text: { ar: "قلب البرجر ووضع شريحة الجبن لتذوب", en: "Flip patties and melt cheese on top" } },
+          { time: "00:09", text: { ar: "تطبيق الساندويتش مع الصوص والخضار والتقديم", en: "Assemble with sauce and toppings" } }
+        ],
+        instructions: {
+          ar: [
+            "قسّم 250 جم من اللحم إلى كرتين متساويتين. لا تخلط البهارات داخل اللحم.",
+            "سخّن مقلاة ثقيلة حتى تدخن، ضع كرة اللحم واضغطها بقوة لتصبح قرصاً، ثم رش الملح والفلفل الأسود فوراً.",
+            "اتركها تتحمر لمدة 2.5 دقيقة لتكتسب قشرة مقرمشة، ثم اقلبها وضع شريحة الجبن وغطها لثوانٍ لتذوب.",
+            "ادهن الخبز المحمص بالصوص وضع البرجر الساخن مع الخس والطماطم."
+          ],
+          en: [
+            "Divide 250g beef into two balls without overworking. Keep unseasoned until cooking.",
+            "Heat a heavy skillet. Place ball and smash firmly flat. Season generously with salt and pepper.",
+            "Sear 2.5 mins for a deep crust, flip, immediately add cheese slice, cover briefly to melt.",
+            "Assemble on toasted buns with sauce and lettuce."
+          ]
+        },
+        substitutions: {
+          ar: ["يمكن استخدام لحم غنم مفروم أو خليط لحم بقري وغنم."],
+          en: ["Can use lamb mince or a beef/lamb blend."]
+        },
+        familyNotes: {
+          ar: "الـ 250 جم تصنع قطعتين برجر عائلية ممتازة مشبعة جداً (125 جم للقطعة). السر في عدم وضع بهارات داخل اللحمة بل رش الملح والفلفل فقط على المقلاة مباشرة.",
+          en: "250g makes 2 hearty 125g patties. Seasoning only on the hot pan makes it far juicier than mixing spices inside the mince."
+        }
+      },
+      {
+        id: "vermicelli-rice",
+        category: "rice",
+        isFavorite: true,
+        name: { ar: "أرز بالشعيرية (قدر عادي / طباخة الرز)", en: "Rice with Vermicelli (Stovetop & Cooker)" },
+        desc: {
+          ar: "الطبق الجانبي الأساسي لمطبخنا، مع تعليمات الطبخ على الغاز أو في طباخة الرز الكهربائية.",
+          en: "Our versatile family staple rice. Detailed for both stovetop and simple rice cookers."
+        },
+        protein: { ar: "نباتي / بدون لحم", en: "Vegetarian" },
+        prepTime: "5 min",
+        cookTime: "20 min",
+        totalTime: "25 min",
+        difficulty: { ar: "سهل جداً", en: "Very Easy" },
+        baseServings: 4,
+        equipment: {
+          ar: ["طباخة أرز كهربائية (Rice Cooker) أو قدر غير لاصق"],
+          en: ["Rice cooker or non-stick pot"]
+        },
+        ingredients: [
+          { name: { ar: "أرز مصري أو بسمتي مغسول ومصفى", en: "Egyptian or Basmati rice, rinsed" }, amount: 2, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "شعيرية", en: "Vermicelli noodles" }, amount: 0.75, unit: { ar: "كوب", en: "cup" } },
+          { name: { ar: "سمن بلدي أو زيت نباتي", en: "Ghee or oil" }, amount: 2, unit: { ar: "ملعقة كبيرة", en: "tbsp" } },
+          { name: { ar: "ماء مغلي أو مرق دجاج", en: "Boiling water or broth" }, amount: 2.5, unit: { ar: "أكواب", en: "cups" } },
+          { name: { ar: "ملح", en: "Salt" }, amount: 1.5, unit: { ar: "ملعقة صغيرة", en: "tsp" } }
+        ],
+        prepSteps: {
+          ar: ["غسل الأرز جيداً وتصفيته من الماء.", "تجهيز الماء المغلي أو المرق الساخن."],
+          en: ["Rinse rice thoroughly and drain.", "Have boiling water or hot broth ready."]
+        },
+        timeline: [
+          { time: "00:00", text: { ar: "تحمير الشعيرية في السمن حتى تصبح بنية ذهبية", en: "Brown vermicelli in ghee until golden brown" } },
+          { time: "00:04", text: { ar: "إضافة الأرز وتشويحه دقيقة مع الشعيرية والملح", en: "Toss rice with vermicelli to coat in ghee" } },
+          { time: "00:06", text: { ar: "إضافة الماء المغلي والانتقال لوضع الطبخ", en: "Add boiling water and simmer / push Cook" } },
+          { time: "00:20", text: { ar: "اكتمال النضج وراحة الرز 5 دقائق قبل التقديم", en: "Cooking complete, rest 5 mins, fluff with fork" } }
+        ],
+        instructions: {
+          ar: [
+            "خيار الغاز العادي: في قدر، سخّن السمن وحمر الشعيرية حتى يصبح لونها ذهبياً غامقاً. أضف الأرز المغسول وقلبه دقيقة، ثم اسكب الماء المغلي والملح. اتركه يغلي حتى يتشرب معظمه، ثم خفف النار لأدنى درجة وغطّ القدر 15 دقيقة.",
+            "خيار طباخة الرز (Rice Cooker): حمّر الشعيرية في مقلاة صغيرة على الغاز بالسمن، ثم اسكب الشعيرية المحمرة والأرز والماء المغلي والملح في طباخة الرز، واضغط زر (Cook) واتركها حتى تتحول تلقائياً إلى (Warm)."
+          ],
+          en: [
+            "Stovetop Method: Melt ghee, sauté vermicelli until deep golden. Add rice and stir for 1 min. Pour in boiling water & salt. Bring to a boil, then reduce heat to lowest, cover, and steam for 15 mins.",
+            "Rice Cooker Method: Quickly toast vermicelli in a pan with ghee until golden, then dump vermicelli, rinsed rice, boiling water, and salt into the Rice Cooker bowl. Press 'Cook' and let it switch to 'Warm'."
+          ]
+        },
+        substitutions: {
+          ar: [
+            "للرز المصري: استخدم 1 كوب ماء لكل 1 كوب رز + ربع كوب إضافي للشعيرية.",
+            "للرز البسمتي: استخدم 1.5 كوب ماء لكل 1 كوب رز."
+          ],
+          en: [
+            "For Egyptian rice: 1:1.15 water-to-rice ratio + splash for vermicelli.",
+            "For Basmati rice: 1:1.5 water-to-rice ratio."
+          ]
+        },
+        familyNotes: {
+          ar: "تحمير الشعيرية خارج طباخة الرز ثم سكبها بالداخل مع الماء المغلي هو أسرع وأضمن تكنيك للحصول على رز نثري ومفلفل بدون حرق الشعيرية.",
+          en: "Toasting vermicelli separately on the stove before dumping into the basic rice cooker gives 100% consistent results without scorching."
+        }
+      }
+    ];
+
+    // --- APPLICATION STATE ---
+    let currentLang = 'ar';
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let currentRecipe = null;
+    let currentServings = 4;
+
+    // --- UI DICTIONARY ---
+    const I18N = {
+      ar: {
+        navTitle: "مطبخنا",
+        navSubtitle: "Our Kitchen",
+        langToggle: "English",
+        heroTag: "وصفات العائلة",
+        heroTitle: "مطبخنا | Our Kitchen",
+        heroDesc: "وصفاتنا اللي جربناها وحبيناها، بمقاديرنا وتعديلاتنا الخاصة.",
+        searchPlaceholder: "ابحث عن وصفة أو مكون...",
+        allHeading: "جميع الوصفات",
+        recipesCount: "وصفات متاحة",
+        backBtn: "العودة للوصفات",
+        bottomRecipes: "الوصفات",
+        bottomAbout: "عن المطبخ",
+        servings: "الحصص / الأفراد",
+        overview: "نظرة عامة",
+        ingredients: "المكونات والمقادير",
+        prep: "التحضير والتجهيز المسبق",
+        timeline: "جدول الطبخ المتزامن",
+        instructions: "خطوات الطبخ",
+        substitutions: "البدائل المتاحة",
+        notes: "ملاحظات وتجارب العائلة",
+        equipment: "الأدوات والمعدات المطلوبة",
+        cats: {
+          all: "الكل",
+          chicken: "دجاج",
+          beef: "لحم بقري",
+          lamb: "لحم خروف",
+          rice: "أرز ومقبلات",
+          quick: "سريع وخفيف",
+          favs: "المفضلة"
+        }
+      },
+      en: {
+        navTitle: "Our Kitchen",
+        navSubtitle: "مطبخنا",
+        langToggle: "عربي",
+        heroTag: "Family Recipes",
+        heroTitle: "Our Kitchen | مطبخنا",
+        heroDesc: "The recipes we cooked, adjusted, and loved.",
+        searchPlaceholder: "Search recipe or ingredient...",
+        allHeading: "All Recipes",
+        recipesCount: "recipes available",
+        backBtn: "Back to recipes",
+        bottomRecipes: "Recipes",
+        bottomAbout: "About",
+        servings: "Servings",
+        overview: "Overview",
+        ingredients: "Ingredients",
+        prep: "Preparation",
+        timeline: "Coordinated Timeline",
+        instructions: "Step-by-Step Instructions",
+        substitutions: "Substitutions",
+        notes: "Our Notes & Lessons",
+        equipment: "Required Equipment",
+        cats: {
+          all: "All",
+          chicken: "Chicken",
+          beef: "Beef",
+          lamb: "Lamb",
+          rice: "Rice & Sides",
+          quick: "Quick Meals",
+          favs: "Favorites"
+        }
+      }
+    };
+
+    // --- INITIALIZATION ---
+    function init() {
+      renderCategoryFilters();
+      renderRecipeList();
+      updateStaticTexts();
+      lucide.createIcons();
+    }
+
+    // --- LANGUAGE TOGGLE & RTL HANDLING ---
+    function toggleLanguage() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      
+      if (currentLang === 'en') {
+        document.body.classList.add('lang-en');
+      } else {
+        document.body.classList.remove('lang-en');
+      }
+
+      updateStaticTexts();
+      renderCategoryFilters();
+      renderRecipeList();
+      if (currentRecipe) {
+        renderRecipeDetail(currentRecipe.id);
+      }
+      lucide.createIcons();
+    }
+
+    function updateStaticTexts() {
+      const t = I18N[currentLang];
+      document.getElementById('nav-title').textContent = t.navTitle;
+      document.getElementById('nav-subtitle').textContent = t.navSubtitle;
+      document.getElementById('lang-btn-text').textContent = t.langToggle;
+      document.getElementById('hero-tag').textContent = t.heroTag;
+      document.getElementById('hero-title').textContent = t.heroTitle;
+      document.getElementById('hero-desc').textContent = t.heroDesc;
+      document.getElementById('search-input').placeholder = t.searchPlaceholder;
+      document.getElementById('recipes-count-heading').textContent = t.allHeading;
+      document.getElementById('back-btn-text').textContent = t.backBtn;
+      document.getElementById('bottom-nav-recipes').textContent = t.bottomRecipes;
+      document.getElementById('bottom-nav-about').textContent = t.bottomAbout;
+    }
+
+    // --- FILTER & SEARCH ---
+    function renderCategoryFilters() {
+      const cats = [
+        { id: 'all', label: I18N[currentLang].cats.all },
+        { id: 'chicken', label: I18N[currentLang].cats.chicken },
+        { id: 'beef', label: I18N[currentLang].cats.beef },
+        { id: 'lamb', label: I18N[currentLang].cats.lamb },
+        { id: 'rice', label: I18N[currentLang].cats.rice },
+        { id: 'favs', label: I18N[currentLang].cats.favs },
+      ];
+
+      const container = document.getElementById('category-filters');
+      container.innerHTML = cats.map(c => `
+        <button 
+          onclick="setCategory('${c.id}')"
+          class="px-4 py-2 rounded-2xl text-xs md:text-sm font-bold whitespace-nowrap transition ${
+            currentCategory === c.id 
+              ? 'bg-brand-500 text-white shadow-sm' 
+              : 'bg-white border border-warm-200 text-warm-800/80 hover:bg-warm-100'
+          }"
+        >
+          ${c.label}
+        </button>
+      `).join('');
+    }
+
+    function setCategory(catId) {
+      currentCategory = catId;
+      renderCategoryFilters();
+      renderRecipeList();
+    }
+
+    function handleSearch(val) {
+      currentSearch = val.toLowerCase().trim();
+      renderRecipeList();
+    }
+
+    // --- RECIPE LIST RENDERING ---
+    function renderRecipeList() {
+      const listContainer = document.getElementById('recipe-list');
+      
+      const filtered = RECIPES.filter(r => {
+        const matchesCat = 
+          currentCategory === 'all' ? true :
+          currentCategory === 'favs' ? r.isFavorite :
+          r.category === currentCategory;
+
+        const nameAr = r.name.ar.toLowerCase();
+        const nameEn = r.name.en.toLowerCase();
+        const descAr = r.desc.ar.toLowerCase();
+        const descEn = r.desc.en.toLowerCase();
+        const s = currentSearch;
+
+        const matchesSearch = !s || nameAr.includes(s) || nameEn.includes(s) || descAr.includes(s) || descEn.includes(s);
+
+        return matchesCat && matchesSearch;
+      });
+
+      document.getElementById('recipes-count').textContent = `${filtered.length} ${I18N[currentLang].recipesCount}`;
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="col-span-full py-12 text-center text-warm-800/50">
+            <i data-lucide="utensils" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
+            <p>${currentLang === 'ar' ? 'لم يتم العثور على وصفات مطابقة' : 'No matching recipes found'}</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(r => `
+        <div 
+          onclick="openRecipe('${r.id}')" 
+          class="bg-white rounded-3xl p-5 border border-warm-200 shadow-sm hover:shadow-md hover:border-brand-200 transition cursor-pointer flex flex-col justify-between group active:scale-[0.99]"
+        >
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-2.5 py-1 bg-warm-100 text-warm-800 rounded-full text-xs font-semibold">
+                ${r.protein[currentLang]}
+              </span>
+              <span class="flex items-center gap-1 text-xs text-warm-800/60 font-medium">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-500"></i>
+                ${r.totalTime}
+              </span>
+            </div>
+
+            <h4 class="text-lg font-bold text-warm-900 group-hover:text-brand-600 transition mb-1">
+              ${r.name[currentLang]}
+            </h4>
+            <p class="text-xs text-warm-800/50 font-medium mb-3">
+              ${currentLang === 'ar' ? r.name.en : r.name.ar}
+            </p>
+            <p class="text-xs md:text-sm text-warm-800/70 line-clamp-2 leading-relaxed mb-4">
+              ${r.desc[currentLang]}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-warm-100 flex items-center justify-between">
+            <span class="text-xs font-bold text-brand-600 flex items-center gap-1">
+              ${currentLang === 'ar' ? 'عرض الوصفة والجدول' : 'View Recipe & Timeline'}
+              <i data-lucide="chevron-left" class="w-4 h-4 rtl:rotate-0 ltr:rotate-180"></i>
+            </span>
+            ${r.isFavorite ? '<i data-lucide="heart" class="w-4 h-4 text-brand-500 fill-brand-500"></i>' : ''}
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // --- RECIPE DETAIL RENDERING & SCALING ---
+    function openRecipe(recipeId) {
+      currentRecipe = RECIPES.find(r => r.id === recipeId);
+      currentServings = currentRecipe.baseServings;
+      renderRecipeDetail();
+      navigate('recipe');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeServings(newServings) {
+      currentServings = Math.max(1, newServings);
+      renderRecipeDetail();
+    }
+
+    function renderRecipeDetail() {
+      if (!currentRecipe) return;
+      const r = currentRecipe;
+      const t = I18N[currentLang];
+      const scaleMultiplier = currentServings / r.baseServings;
+
+      const container = document.getElementById('recipe-detail-container');
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 bg-brand-500/10 text-brand-600 rounded-full text-xs font-bold">
+              ${r.protein[currentLang]}
+            </span>
+            <span class="px-3 py-1 bg-warm-100 text-warm-800 rounded-full text-xs font-semibold">
+              ${r.difficulty[currentLang]}
+            </span>
+          </div>
+
+          <div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-warm-900">${r.name[currentLang]}</h2>
+            <p class="text-sm text-warm-800/50 font-medium mt-0.5">${currentLang === 'ar' ? r.name.en : r.name.ar}</p>
+          </div>
+
+          <p class="text-sm md:text-base text-warm-800/80 leading-relaxed">${r.desc[currentLang]}</p>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+            <div class="bg-warm-50 p-3 rounded-2xl border border-warm-100">
+              <span class="block text-xs text-warm-800/60 font-medium mb-1">${currentLang === 'ar' ? 'التحضير' : 'Prep'}</span>
+              <span class="text-xs md:text-sm font-bold text-warm-900">${r.prepTime}</span>
+            </div>
+            <div class="bg-warm-50 p-3 rounded-2xl border border-warm-100">
+              <span class="block text-xs text-warm-800/60 font-medium mb-1">${currentLang === 'ar' ? 'الطبخ' : 'Cook'}</span>
+              <span class="text-xs md:text-sm font-bold text-warm-900">${r.cookTime}</span>
+            </div>
+            <div class="bg-brand-50/50 p-3 rounded-2xl border border-brand-100">
+              <span class="block text-xs text-brand-600 font-medium mb-1">${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</span>
+              <span class="text-xs md:text-sm font-bold text-brand-700">${r.totalTime}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-warm-100">
+            <div>
+              <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+                <i data-lucide="scale" class="w-5 h-5 text-brand-500"></i>
+                ${t.ingredients}
+              </h3>
+              <p class="text-xs text-warm-800/60">${currentLang === 'ar' ? 'المقادير تتغير تلقائياً حسب عدد الأشخاص' : 'Amounts scale automatically'}</p>
+            </div>
+
+            <div class="flex items-center gap-3 bg-warm-50 px-3 py-1.5 rounded-2xl border border-warm-200 self-start sm:self-auto">
+              <span class="text-xs font-semibold text-warm-800">${t.servings}:</span>
+              <div class="flex items-center gap-2">
+                <button onclick="changeServings(${currentServings - 1})" class="w-7 h-7 rounded-xl bg-white border border-warm-200 text-warm-900 flex items-center justify-center font-bold active:scale-95 shadow-xs">-</button>
+                <span class="text-sm font-extrabold text-brand-600 w-5 text-center">${currentServings}</span>
+                <button onclick="changeServings(${currentServings + 1})" class="w-7 h-7 rounded-xl bg-white border border-warm-200 text-warm-900 flex items-center justify-center font-bold active:scale-95 shadow-xs">+</button>
+              </div>
+            </div>
+          </div>
+
+          <ul class="space-y-2.5">
+            ${r.ingredients.map(ing => {
+              const scaledAmount = typeof ing.amount === 'number' 
+                ? Number((ing.amount * scaleMultiplier).toFixed(1)).toString() 
+                : ing.amount;
+              const unitStr = typeof ing.unit === 'object' ? ing.unit[currentLang] : (ing.unit || '');
+              return `
+                <li class="flex items-center justify-between py-1.5 px-3 rounded-xl hover:bg-warm-50 transition border border-transparent hover:border-warm-100 text-sm">
+                  <span class="text-warm-900 font-medium">${ing.name[currentLang]}</span>
+                  <span class="font-bold text-brand-600 bg-brand-50/60 px-2 py-0.5 rounded-lg border border-brand-100/50">
+                    ${scaledAmount} ${unitStr}
+                  </span>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-3">
+          <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+            <i data-lucide="check-square" class="w-5 h-5 text-brand-500"></i>
+            ${t.prep}
+          </h3>
+          <ul class="space-y-2 text-sm text-warm-800">
+            ${r.prepSteps[currentLang].map(step => `
+              <li class="flex items-start gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-brand-500 mt-2 shrink-0"></span>
+                <span class="leading-relaxed">${step}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <div class="bg-gradient-to-br from-brand-50/70 to-orange-50/50 rounded-3xl p-6 border border-brand-100 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+              <i data-lucide="timer" class="w-5 h-5 text-brand-500"></i>
+              ${t.timeline}
+            </h3>
+            <span class="text-xs px-2.5 py-1 bg-brand-500 text-white rounded-full font-semibold">
+              ${currentLang === 'ar' ? 'تنسيق متزامن' : 'Coordinated'}
+            </span>
+          </div>
+          <p class="text-xs text-warm-800/70">
+            ${currentLang === 'ar' ? 'اتبع هذا التوقيت لتنتهي جميع المكونات والرز معاً ساخنة' : 'Follow this sequence so protein, sauce, and rice finish hot together'}
+          </p>
+
+          <div class="relative border-r-2 rtl:border-r-2 rtl:border-l-0 ltr:border-l-2 ltr:border-r-0 border-brand-300 mr-2 ltr:mr-0 ltr:ml-2 space-y-4 py-1">
+            ${r.timeline.map((item, idx) => `
+              <div class="relative pr-6 rtl:pr-6 rtl:pl-0 ltr:pl-6 ltr:pr-0">
+                <span class="absolute -right-2 rtl:-right-2 rtl:left-auto ltr:-left-2 ltr:right-auto top-1 w-4 h-4 rounded-full bg-white border-2 border-brand-500"></span>
+                <span class="inline-block font-mono text-xs font-bold text-brand-700 bg-white/80 px-2 py-0.5 rounded border border-brand-200 mb-1">${item.time}</span>
+                <p class="text-sm font-semibold text-warm-900 leading-snug">${item.text[currentLang]}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-4">
+          <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+            <i data-lucide="list-ordered" class="w-5 h-5 text-brand-500"></i>
+            ${t.instructions}
+          </h3>
+          <ol class="space-y-4">
+            ${r.instructions[currentLang].map((inst, i) => `
+              <li class="flex items-start gap-3.5 text-sm text-warm-800 leading-relaxed">
+                <span class="w-6 h-6 rounded-xl bg-warm-100 text-warm-900 font-bold flex items-center justify-center shrink-0 text-xs mt-0.5">
+                  ${i + 1}
+                </span>
+                <span>${inst}</span>
+              </li>
+            `).join('')}
+          </ol>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-3">
+          <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+            <i data-lucide="repeat" class="w-5 h-5 text-brand-500"></i>
+            ${t.substitutions}
+          </h3>
+          <ul class="space-y-2 text-sm text-warm-800">
+            ${r.substitutions[currentLang].map(sub => `
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="arrow-left-right" class="w-4 h-4 text-brand-500 mt-1 shrink-0"></i>
+                <span class="leading-relaxed">${sub}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <div class="bg-amber-50/70 border border-amber-200 rounded-3xl p-6 shadow-sm space-y-2">
+          <h3 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-amber-600"></i>
+            ${t.notes}
+          </h3>
+          <p class="text-sm md:text-base text-amber-950/80 leading-relaxed">
+            "${r.familyNotes[currentLang]}"
+          </p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 border border-warm-200 shadow-sm space-y-3">
+          <h3 class="text-lg font-bold text-warm-900 flex items-center gap-2">
+            <i data-lucide="wrench" class="w-5 h-5 text-brand-500"></i>
+            ${t.equipment}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            ${r.equipment[currentLang].map(eq => `
+              <span class="px-3 py-1.5 bg-warm-50 text-warm-800 text-xs font-semibold rounded-xl border border-warm-200">
+                ${eq}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    // --- NAVIGATION CONTROLLER ---
+    function navigate(viewName) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-recipe').classList.add('hidden');
+      document.getElementById('view-about').classList.add('hidden');
+
+      const homeBtn = document.getElementById('nav-btn-home');
+      const aboutBtn = document.getElementById('nav-btn-about');
+
+      if (viewName === 'home') {
+        document.getElementById('view-home').classList.remove('hidden');
+        homeBtn.classList.replace('text-warm-800/60', 'text-brand-600');
+        aboutBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+      } else if (viewName === 'recipe') {
+        document.getElementById('view-recipe').classList.remove('hidden');
+      } else if (viewName === 'about') {
+        document.getElementById('view-about').classList.remove('hidden');
+        aboutBtn.classList.replace('text-warm-800/60', 'text-brand-600');
+        homeBtn.classList.replace('text-brand-600', 'text-warm-800/60');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Run on startup
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
